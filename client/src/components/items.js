@@ -1,10 +1,9 @@
-const sequelize  = require("../../../src/db/models").Sequelize;
-const Item  = require("../../../src/db/models").Item;
-const User  = require("../../../src/db/models").User;
-
-
 import React, { Component } from 'react';
 import './items.css';
+
+
+
+
 
 class Items extends Component {
   constructor() {
@@ -14,7 +13,7 @@ class Items extends Component {
     };
   }
 
-  componentDidMount() {
+  /*componentDidMount() {
     Item.findAll()
     .then((items) => {
       this.setState({items: items});
@@ -23,6 +22,26 @@ class Items extends Component {
       console.log(err);
       this.setState({items: "error"});
     })
+  }*/
+  componentDidMount() {
+    fetch('/')
+      //.then(res => res.json())
+      //.then(customers => this.setState({customers}, () => console.log('Customers fetched...', customers)));
+  }
+
+  handleSubmit(e){
+    e.preventDefault;
+
+    
+    const data = new FormData(e.target);
+
+
+    fetch("/items/submit", {
+      method: 'POST',
+      body: "cookies"
+    })
+    .then((response)=>{
+      alert(response.json())})
   }
 
   render() {
@@ -30,9 +49,13 @@ class Items extends Component {
       <div>
         <h2>Items</h2>
         <ul>
-        {this.state.items.map((item) => 
-          <li key={item.id}>name: {item.name} aquired:{item.isAquired}</li>
-        )}
+          <form onSubmit={this.handleSubmit}>
+            <label for="name">name:</label>
+            <input type="text" name="name"/>
+           
+            <button type="submit">submit</button>
+          </form>
+
         </ul>
       </div>
     );

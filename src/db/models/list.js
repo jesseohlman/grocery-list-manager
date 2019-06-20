@@ -1,34 +1,29 @@
 'use strict';
 module.exports = (sequelize, DataTypes) => {
-  const item = sequelize.define('item', {
-    name: {
+  const list = sequelize.define('list', {
+    title: {
       type: DataTypes.STRING,
       allowNull: false
     },
-    count: {
-      type: DataTypes.INTEGER,
-      allowNull: false
+    store: {
+      type: DataTypes.STRING,
+      allowNull: true
     },
-    isAquired: {
+    isCompleted: {
       type: DataTypes.BOOLEAN,
       defaultValue: false
     },
-    listId: {
+    userId: {
       type: DataTypes.INTEGER,
       allowNull: false
     }
   }, {});
-  item.associate = function(models) {
+  list.associate = function(models) {
     // associations can be defined here
-    hasOne(models.user, {
-      foreignKey: "itemId",
-      as: "user"
-    })
-
-    belongsTo(models.list, {
+    list.hasMany(models.item, {
       foreignKey: "listId",
-      onDelete: "CASCADE"
+      as: "items"
     })
   };
-  return item;
+  return list;
 };
