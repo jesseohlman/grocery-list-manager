@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
 import Items from './components/items';
+import List from './components/list';
 
 class App extends Component {
   render() {
@@ -12,6 +13,8 @@ class App extends Component {
           <h1 className="App-title">React Express Starter</h1>
         </header>
         <Items />
+
+        <List />
       </div>
     );
   }

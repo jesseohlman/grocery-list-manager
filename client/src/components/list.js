@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
-import './items.css';
+
 
 const axios = require("axios");
 
-class Items extends Component {
+class List extends Component {
   constructor() {
     super();
     this.state = {
-      items: []
+      lists: []
     };
 
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -31,10 +31,10 @@ class Items extends Component {
 
   handleSubmit(e){
     e.preventDefault();
-    console.log("submitted");
 
-    axios.post("/items/submit", {
-      name: this.name.value
+    axios.post("/lists/submit", {
+      title: this.title.value,
+      store: this.store.value
     })
     .then((res) => {
       console.log(res);
@@ -48,13 +48,19 @@ class Items extends Component {
   render() {
     return (
       <div>
-        <h2>Items</h2>
+        <h2>List</h2>
         <ul>
         <form onSubmit={this.handleSubmit}>
-        <label>
-          Name:
-          <input type="text" ref={(name) => this.name = name} />
-        </label>
+        <div>
+            <label for="title">List Title:</label>
+            <input type="text" name="title" ref={(title) => this.title = title} />
+        </div>
+
+        <div>
+            <label for="store">Store Name:</label>
+            <input type="text" name="store" ref={(store) => this.store = store} />
+        </div>
+        
         <input type="submit" value="Submit" />
       </form>
 
@@ -64,4 +70,4 @@ class Items extends Component {
   }
 }
 
-export default Items;
+export default List;
