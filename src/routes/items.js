@@ -3,6 +3,7 @@ const router = express.Router();
 const itemController = require("../controllers/itemController");
 
 
-router.post("/lists/:listId/items/submit", itemController.new);
+router.post("/lists/:id/addItem", itemController.addItem);
+
 
 module.exports = router;

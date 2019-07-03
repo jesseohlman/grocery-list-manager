@@ -3,9 +3,9 @@ import './items.css';
 
 const axios = require("axios");
 
-class Items extends Component {
-  constructor() {
-    super();
+class ItemAdd extends Component {
+  constructor(props) {
+    super(props);
     this.state = {
       items: []
     };
@@ -23,21 +23,17 @@ class Items extends Component {
       this.setState({items: "error"});
     })
   }*/
-  componentDidMount() {
-    fetch('/')
-      //.then(res => res.json())
-      //.then(customers => this.setState({customers}, () => console.log('Customers fetched...', customers)));
-  }
+
 
   handleSubmit(e){
     e.preventDefault();
-    console.log("submitted");
 
-    axios.post("/items/submit", {
-      name: this.name.value
+    axios.post(`/lists/${this.props.listId}/addItem`, {
+      name: this.name.value,
+      count: this.count.value,
+      listId: this.props.listId
     })
     .then((res) => {
-      console.log(res);
     })
     .catch((err) => {
       console.log(err);
@@ -55,6 +51,11 @@ class Items extends Component {
           Name:
           <input type="text" ref={(name) => this.name = name} />
         </label>
+        <label>
+          Count:
+          <input type="text" ref={(count) => this.count = count} />
+        </label>
+
         <input type="submit" value="Submit" />
       </form>
 
@@ -64,4 +65,4 @@ class Items extends Component {
   }
 }
 
-export default Items;
+export default ItemAdd;

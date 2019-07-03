@@ -7,10 +7,9 @@ class List extends Component {
   constructor() {
     super();
     this.state = {
-      lists: []
     };
 
-    this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleCreate = this.handleCreate.bind(this);
   }
 
   /*componentDidMount() {
@@ -29,10 +28,10 @@ class List extends Component {
       //.then(customers => this.setState({customers}, () => console.log('Customers fetched...', customers)));
   }
 
-  handleSubmit(e){
+  handleCreate(e){
     e.preventDefault();
 
-    axios.post("/lists/submit", {
+    axios.post("/lists/create", {
       title: this.title.value,
       store: this.store.value
     })
@@ -50,7 +49,7 @@ class List extends Component {
       <div>
         <h2>List</h2>
         <ul>
-        <form onSubmit={this.handleSubmit}>
+        <form onSubmit={this.handleCreate}>
         <div>
             <label for="title">List Title:</label>
             <input type="text" name="title" ref={(title) => this.title = title} />

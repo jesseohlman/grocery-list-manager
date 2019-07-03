@@ -2,8 +2,11 @@ import React, { Component } from 'react';
 import { Route, Link, BrowserRouter as Router } from 'react-router-dom';
 import logo from './logo.svg';
 import './App.css';
-import Items from './components/items';
-import List from './components/list';
+
+
+import ListCreate from './components/listCreate';
+import ListSelect from './components/listSelect';
+
 import UserSignUp from './components/userSignUp';
 import UserSignIn from './components/userSignIn';
 
@@ -41,15 +44,17 @@ class App extends Component {
         <Router>
           <div>
             <ul>
-              <li><Link to="/lists/items/add/">Add Items</Link></li>
               <li><Link to="/lists/new/">New List</Link></li>
+              <li><Link to="/lists/select/">Select List</Link></li>
+
               <li><Link to="/users/new/">Create Account</Link></li>
               <li><Link to="/users/SignIn/">Sign In</Link></li>
               <button onClick={this.handleSignOut}>Sign Out</button>
 
             </ul>
-            <Route path="/lists/items/add/" component={Items} />
-            <Route path="/lists/new/" component={List} />
+            <Route path="/lists/new/" component={ListCreate} />
+            <Route path="/lists/select/" component={ListSelect} />
+
             <Route path="/users/new/" component={UserSignUp}/>
             <Route path="/users/signIn/" component={UserSignIn}/>
 

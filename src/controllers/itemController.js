@@ -1,11 +1,15 @@
 const item = require("../db/models").item;
 
 module.exports = {
-    new(req, res, next){
+    addItem(req, res, next){
         item.create({
             name: req.body.name,
             count: req.body.count,
-            listId: req.params.listId
+            listId: req.body.listId
         })
+        .then((item) => {
+            res.json(item);
+        })
+
     }
 }
