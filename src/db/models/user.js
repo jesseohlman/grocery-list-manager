@@ -5,20 +5,17 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: false
     },
-    password: {
-      type: DataTypes.INTEGER,
+    email: {
+      type: DataTypes.STRING,
       allowNull: false
     },
-    itemId: {
-      type: DataTypes.INTEGER,
-      allowNull: true
+    password: {
+      type: DataTypes.STRING,
+      allowNull: false
     }
   }, {});
   user.associate = function(models) {
     // associations can be defined here
-    user.belongsTo(models.item, {
-      foreignKey: "itemId"
-    });
   };
   return user;
 };
