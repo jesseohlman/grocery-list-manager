@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 
+import Item from "./item";
 
 const axios = require("axios");
 
@@ -7,11 +8,12 @@ class ListView extends Component {
   constructor(props) {
     super(props);
     this.state = {
-        items: [],
-        currentListId: null
+        items: []
     };
 
-    this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleCreate = this.handleCreate.bind(this);
+    this.handleDelete  =this.handleDelete.bind(this);
+    this.handleComplete = this.handleComplete.bind(this);
   }
 
   componentDidMount() {
@@ -22,8 +24,7 @@ class ListView extends Component {
 
 
 
-  handleSubmit(e){
-      console.log("handleSubmit");
+  handleCreate(e){
     e.preventDefault();
 
     axios.post(`/lists/${this.props.listId}/addItem`, {
@@ -35,7 +36,33 @@ class ListView extends Component {
         //updates list with new item
         fetch(`/lists/${this.props.listId}/view`, {credentials: "include"})
         .then(res => res.json())
-        .then(items => this.setState({items: this.state.items.concat(items)}))
+        .then(items => this.setState({items: this.state.items.concat(items[items.length - 1])}))
+    })
+    .catch((err) => {
+      console.log(err);
+    })
+
+  }
+
+  handleComplete(e, itemId){
+    axios.post(`/lists/${this.props.listId}/completeItem`, {
+      itemId: itemId,
+      listId: this.props.listId
+    })
+  }
+
+  handleDelete(e, itemId){
+    e.preventDefault();
+
+    axios.post(`/lists/${this.props.listId}/deleteItem`, {
+      itemId: itemId
+    })
+    .then((res) => {
+
+      fetch(`/lists/${this.props.listId}/view`, {credentials: "include"})
+      .then(res => res.json())
+      .then(items => this.setState({items: items}))
+      //re-renders items with the one removed
     })
     .catch((err) => {
       console.log(err);
@@ -44,9 +71,10 @@ class ListView extends Component {
   }
 
   render() {
+    //MAYBE CONVERT THE ITEMS AND THEIR FUNCTIONS TO DIFFERENT COMPONENT
     return (
       <div>
-        <form onSubmit={this.handleSubmit}>
+        <form onSubmit={this.handleCreate}>
         <div>Add Item</div>
             <label>
             Name:
@@ -60,11 +88,16 @@ class ListView extends Component {
             <input type="submit" value="Submit" />
       </form>
 
-        <ul>
-            {this.state.items.map(item =>
-                <li key={item.id}>name: {item.name}<br></br><small>count: {item.count}</small></li>
-                )}
-        </ul>
+
+          <ul>
+              {this.state.items.map(item =>
+                  <li key={item.id}> <Item handleDelete={(e) => this.handleDelete(e)} 
+                  itemId={item.id}
+                  listId={this.props.listId}/>
+                  </li>
+                  )}
+          </ul>
+
 
       </div>
     );

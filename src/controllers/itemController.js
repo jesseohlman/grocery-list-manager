@@ -11,5 +11,38 @@ module.exports = {
             res.json(item);
         })
 
+    },
+
+    deleteItem(req, res, next){
+        item.destroy({where: {id: req.body.itemId, listId: req.params.listId}})
+        .then((item) => {
+            res.json(item);
+            console.log("an Item has been removed from the list");
+        })
+        .catch((err) => {
+            console.log(err);
+        })
+    },
+
+    complete(req, res, next){
+        item.findOne({where: {id: req.body.itemId, listId: req.body.listId}})
+        .then((item) => {
+            var change = false;
+            item.isAquired === false ? change = true : change = false;
+
+            item.update({isAquired: change})
+            .then((item) => {
+                res.json(item);
+                console.log(`item compleded? : ${item.isAquired}`)
+            })
+            
+        })
+    },
+
+    getItem(req, res, next){
+        item.findOne({where: {id: req.params.id, listId: req.params.listId}})
+        .then((item) => {
+            res.json(item);
+        })
     }
 }

@@ -32,10 +32,13 @@ module.exports = {
     },
 
     view(req, res, next){
-        console.log(`params.id: ${req.params.id}`)
         item.findAll({where: {listId: req.params.id}})
         .then((items) => {
-            res.json(items);
+            if(items){
+                res.json(items);
+            } else {
+                res.json({name: "no Items have been added to this list", count: 0})
+            }
 
         })
     }
