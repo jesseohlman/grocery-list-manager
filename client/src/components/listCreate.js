@@ -12,21 +12,6 @@ class List extends Component {
     this.handleCreate = this.handleCreate.bind(this);
   }
 
-  /*componentDidMount() {
-    Item.findAll()
-    .then((items) => {
-      this.setState({items: items});
-    })
-    .catch((err) => {
-      console.log(err);
-      this.setState({items: "error"});
-    })
-  }*/
-  componentDidMount() {
-    fetch('/')
-      //.then(res => res.json())
-      //.then(customers => this.setState({customers}, () => console.log('Customers fetched...', customers)));
-  }
 
   handleCreate(e){
     e.preventDefault();

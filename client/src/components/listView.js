@@ -8,23 +8,24 @@ class ListView extends Component {
   constructor(props) {
     super(props);
     this.state = {
-        items: []
+        items: [],
+        isCompleted: false
     };
 
-    this.handleCreate = this.handleCreate.bind(this);
-    this.handleDelete  =this.handleDelete.bind(this);
-    this.handleComplete = this.handleComplete.bind(this);
+    this.handleItemAdd = this.handleItemAdd.bind(this);
+    this.handleItemDelete  =this.handleItemDelete.bind(this);
+    this.handleListComplete = this.handleListComplete.bind(this);
   }
 
   componentDidMount() {
     fetch(`/lists/${this.props.listId}/view`, {credentials: "include"})
     .then(res => res.json())
-    .then(items => this.setState({items: this.state.items.concat(items)}))
+    .then(items => this.setState({items: this.state.items.concat(items), isCompleted: this.props.listComplete}))
   }
 
 
 
-  handleCreate(e){
+  handleItemAdd(e){
     e.preventDefault();
 
     axios.post(`/lists/${this.props.listId}/addItem`, {
@@ -36,7 +37,7 @@ class ListView extends Component {
         //updates list with new item
         fetch(`/lists/${this.props.listId}/view`, {credentials: "include"})
         .then(res => res.json())
-        .then(items => this.setState({items: this.state.items.concat(items[items.length - 1])}))
+        .then(items => this.setState({items: this.state.items.concat(items[items.length - 1]), isCompleted: this.state.isCompleted}))
     })
     .catch((err) => {
       console.log(err);
@@ -44,14 +45,17 @@ class ListView extends Component {
 
   }
 
-  handleComplete(e, itemId){
-    axios.post(`/lists/${this.props.listId}/completeItem`, {
-      itemId: itemId,
-      listId: this.props.listId
+  handleListComplete(e, listId){
+    axios.post(`/lists/${this.props.listId}/complete`, {
+      listId: listId
+    })
+    .then((res) => {
+      var change = this.state.isCompleted ? false : true;
+      this.setState({items: [...this.state.items], isCompleted: change})
     })
   }
 
-  handleDelete(e, itemId){
+  handleItemDelete(e, itemId){
     e.preventDefault();
 
     axios.post(`/lists/${this.props.listId}/deleteItem`, {
@@ -61,7 +65,7 @@ class ListView extends Component {
 
       fetch(`/lists/${this.props.listId}/view`, {credentials: "include"})
       .then(res => res.json())
-      .then(items => this.setState({items: items}))
+      .then(items => this.setState({items: items, isCompleted: this.state.isCompleted}))
       //re-renders items with the one removed
     })
     .catch((err) => {
@@ -71,10 +75,14 @@ class ListView extends Component {
   }
 
   render() {
-    //MAYBE CONVERT THE ITEMS AND THEIR FUNCTIONS TO DIFFERENT COMPONENT
+    var isCompleted = this.state.isCompleted;
+
     return (
       <div>
-        <form onSubmit={this.handleCreate}>
+
+        <div>List Completed: {isCompleted ? (<input type="checkbox"  onChange={(e) => this.handleListComplete(e, this.props.listId)} checked/>) : (<input type="checkbox"  onChange={(e) => this.handleListComplete(e, this.props.listId)}/>)}</div>
+
+        <form onSubmit={this.handleItemAdd}>
         <div>Add Item</div>
             <label>
             Name:
@@ -91,8 +99,8 @@ class ListView extends Component {
 
           <ul>
               {this.state.items.map(item =>
-                  <li key={item.id}> <Item handleDelete={(e) => this.handleDelete(e)} 
-                  itemId={item.id}
+                  <li key={item.id}> <Item handleItemDelete={() => this.handleItemDelete()} 
+                  item={item}
                   listId={this.props.listId}/>
                   </li>
                   )}

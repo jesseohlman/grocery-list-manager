@@ -42,10 +42,18 @@ module.exports = {
     },
 
     currentUser(req, res, next){
-        res.json(req.user);
+        if(req.user){
+            console.log("yes req.user")
+            res.json(req.user);
+        } else {
+            console.log("no req.user")
+
+            res.json({id: undefined});
+        }
     },
 
     signin(req, res, next){
+        console.log(`email: ${req.body.password}`);
         passport.authenticate('local', { successRedirect: '/', failureRedirect: '/lists/items/add/'})(req, res);
     },
 

@@ -6,39 +6,25 @@ class UserSignIn extends Component{
         super(props);
 
         this.state = {
-
+            email: null,
+            password: null
         }
 
-        this.handleSignIn = this.handleSignIn.bind(this);
+        this.handleSubmit = this.handleSubmit.bind(this);
+        this.handleChange = this.handleChange.bind(this);
+
     }
 
-    /*componentDidMount() {
-
-        fetch('/users/user', {credentials: 'include'})//credentials includes req.user in the request
-        .then(res => res.json())
-        .then(users => this.setState({users: this.state.users.concat(users)}));
-    
+    handleChange(e){
+        this.setState({[e.target.id]: e.target.value})
     }
 
-    renderUsers(){
-        var ele = document.getElementById("users");
-        ele.innerHTML = this.state.users.map((user) => {return user.email}).join("\n");
-    }*/
+    handleSubmit(e){
+        e.preventDefault();
 
-    handleSignIn(e){
-       e.preventDefault();
-        
-        axios.post("/users/signIn", {
-          email: this.email_sign.value,
-          password: this.password_sign.value
-        })
-        .then((res) => {
-          console.log("SignIn attempted");
-        })
-        .catch((err) => {
-          console.log(err);
-        })
-      }
+        this.props.handleSignIn(this.state);
+    }
+
 
 
     render(){
@@ -46,15 +32,15 @@ class UserSignIn extends Component{
             <div>
                 <div>
                 <h2>Sign In</h2>
-                <form onSubmit={this.handleSignIn}>
+                <form onSubmit={this.handleSubmit}>
                     <div>
                         <label for="email_sign">Email:</label>
-                        <input type="text" name="email_sign" ref={(email_sign) => this.email_sign = email_sign} />
+                        <input type="text" id="email" onChange={this.handleChange} />
                     </div>
                     
                     <div>
                         <label for="password_sign">Password:</label>
-                        <input type="text" name="password_sign" ref={(password_sign) => this.password_sign = password_sign} />
+                        <input type="text" id="password" onChange={this.handleChange} />
                     </div>
 
                     <input type="submit" value="Submit" />

@@ -33,16 +33,8 @@ module.exports = {
             item.update({isAquired: change})
             .then((item) => {
                 res.json(item);
-                console.log(`item compleded? : ${item.isAquired}`)
             })
             
-        })
-    },
-
-    getItem(req, res, next){
-        item.findOne({where: {id: req.params.id, listId: req.params.listId}})
-        .then((item) => {
-            res.json(item);
         })
     }
 }

@@ -41,5 +41,29 @@ module.exports = {
             }
 
         })
+    },
+
+    complete(req, res, next){
+        list.findOne({where: {id: req.body.listId}})
+        .then((list) => {
+            var change = list.isCompleted === false ?  true : false;
+
+            list.update({isCompleted: change})
+            .then((list) => {
+                res.json(list);
+            })
+            
+        })
+    },
+
+    delete(req, res, next){
+        list.destroy({where: {id: req.body.listId}})
+        .then((list) => {
+            res.json(list);
+            console.log("a list has been deleted.");
+        })
+        .catch((err) => {
+            console.log(err);
+        })
     }
 }

@@ -15,9 +15,7 @@ class Item extends Component {
   }
 
   componentDidMount(){
-    fetch(`/lists/${this.props.listId}/item/${this.props.itemId}/`)
-    .then(res => res.json())
-    .then(item => this.setState({item: item, isCompleted: item.isAquired}))
+    this.setState({item: this.props.item, isCompleted: this.props.item.isAquired});
   }
   
   handleComplete(e, itemId){
@@ -33,12 +31,12 @@ class Item extends Component {
 
 
   render() {
-    var isCompleted = this.state.isCompleted;
+    var isAquired = this.state.isCompleted;
     return (
       <div>
         name: {this.state.item.name}<br></br><small>count: {this.state.item.count}</small>
-                  <button onClick={(e) => this.props.handleDelete(e, this.state.item.id)}>Remove</button>
-                  Aquired: {isCompleted ? (<input type="checkbox" name="complete"  onChange={(e) => this.handleComplete(e, this.state.item.id)} checked/>) : <input type="checkbox" name="complete"  onChange={(e) => this.handleComplete(e, this.state.item.id)}/>}
+                  <button onClick={(e) => this.props.handleItemDelete(e, this.state.item.id)}>Remove</button>
+                  Aquired: {isAquired ? (<input type="checkbox" name="complete"  onChange={(e) => this.handleComplete(e, this.state.item.id)} checked/>) : <input type="checkbox" name="complete"  onChange={(e) => this.handleComplete(e, this.state.item.id)}/>}
       </div>
     )
   }

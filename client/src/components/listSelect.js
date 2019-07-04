@@ -6,13 +6,13 @@ import ListView from "./listView";
 const axios = require("axios");
 
 class ListSelect extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
         lists: []
     };
 
-    this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleListDelete = this.handleListDelete.bind(this);
   }
 
   componentDidMount() {
@@ -26,15 +26,18 @@ class ListSelect extends Component {
     ele.innerHTML = this.state.users.map((user) => {return user.email}).join("\n");
   }
 
-  handleSubmit(e){
+  handleListDelete(e, listId){
     e.preventDefault();
 
-    axios.post("/lists/create", {
-      title: this.title.value,
-      store: this.store.value
+    axios.post(`/lists/${listId}/delete`, {
+      listId: listId
     })
     .then((res) => {
-      console.log(res);
+
+      fetch("/lists/select", {credentials: "include"})
+      .then(res => res.json())
+      .then(lists => this.setState({lists: lists}))
+      //re-renders items with the one list removed
     })
     .catch((err) => {
       console.log(err);
@@ -53,8 +56,9 @@ class ListSelect extends Component {
 
                         <Route path={"/lists/" + list.id + "/view"}
                          render={(props) => 
-                             <ListView {...props} listId={list.id}/>}>
+                             <ListView {...props} listId={list.id} listComplete={list.isCompleted}/>}>
                         </Route>
+                        <button onClick={(e) => this.handleListDelete(e, list.id)}>Delete</button>
                     </li>
                     )}
             </ul>
