@@ -53,6 +53,7 @@ class ListSelect extends Component {
             <ul>
                 {this.state.lists.map(list =>
                     <li key={list.id}><Link to={"/lists/" + list.id + "/view"}>Title: {list.title}<br></br><small>Store: {list.store}</small></Link>
+                    <small>Completed: {list.isCompleted ? (<div>true</div>) : (<div>false</div>)}</small>
 
                         <Route path={"/lists/" + list.id + "/view"}
                          render={(props) => 

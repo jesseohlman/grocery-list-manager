@@ -17,6 +17,7 @@ class Item extends Component {
   componentDidMount(){
     this.setState({item: this.props.item, isCompleted: this.props.item.isAquired});
   }
+
   
   handleComplete(e, itemId){
     axios.post(`/lists/${this.props.listId}/completeItem`, {
@@ -35,7 +36,6 @@ class Item extends Component {
     return (
       <div>
         name: {this.state.item.name}<br></br><small>count: {this.state.item.count}</small>
-                  <button onClick={(e) => this.props.handleItemDelete(e, this.state.item.id)}>Remove</button>
                   Aquired: {isAquired ? (<input type="checkbox" name="complete"  onChange={(e) => this.handleComplete(e, this.state.item.id)} checked/>) : <input type="checkbox" name="complete"  onChange={(e) => this.handleComplete(e, this.state.item.id)}/>}
       </div>
     )

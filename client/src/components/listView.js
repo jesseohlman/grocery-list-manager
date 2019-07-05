@@ -37,7 +37,7 @@ class ListView extends Component {
         //updates list with new item
         fetch(`/lists/${this.props.listId}/view`, {credentials: "include"})
         .then(res => res.json())
-        .then(items => this.setState({items: this.state.items.concat(items[items.length - 1]), isCompleted: this.state.isCompleted}))
+        .then(items => this.setState({items: items, isCompleted: this.state.isCompleted}))
     })
     .catch((err) => {
       console.log(err);
@@ -99,9 +99,12 @@ class ListView extends Component {
 
           <ul>
               {this.state.items.map(item =>
-                  <li key={item.id}> <Item handleItemDelete={() => this.handleItemDelete()} 
+              
+                  <li key={item.id}> <Item handleItemDelete={(e) => this.handleItemDelete(e)} 
                   item={item}
                   listId={this.props.listId}/>
+                  <button onClick={(e) => this.handleItemDelete(e, item.id)}>Remove</button>
+
                   </li>
                   )}
           </ul>
