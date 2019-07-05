@@ -4,6 +4,11 @@ module.exports = {
         const listRoutes = require("../routes/lists");
         const userRoutes = require("../routes/users");
 
+        if(process.env.NODE_ENV === "test") {
+            const mockAuth = require("../../spec/auth/auth.js");
+            mockAuth.fakeIt(app);
+        }
+
         app.use(userRoutes);
         app.use(listRoutes);
         app.use(itemsRoutes);
