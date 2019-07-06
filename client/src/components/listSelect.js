@@ -59,7 +59,7 @@ class ListSelect extends Component {
                          render={(props) => 
                              <ListView {...props} listId={list.id} listComplete={list.isCompleted}/>}>
                         </Route>
-                        <button onClick={(e) => this.handleListDelete(e, list.id)}>Delete</button>
+                        <button className="btn btn-primary" onClick={(e) => this.handleListDelete(e, list.id)}>Delete</button>
                     </li>
                     )}
             </ul>

@@ -23,6 +23,7 @@ class UserSignIn extends Component{
         e.preventDefault();
 
         this.props.handleSignIn(this.state);
+        e.target.reset();
     }
 
 

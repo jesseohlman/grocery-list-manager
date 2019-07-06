@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Route, Link, BrowserRouter as Router } from 'react-router-dom';
 import logo from './logo.svg';
-import './App.css';
+//import './App.css';
 
 
 import ListCreate from './components/listCreate';
@@ -76,8 +76,7 @@ class App extends Component {
       <div className="App">
       
         <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h1 className="App-title">React Express Starter</h1>
+          <h1 className="App-title">Grocery List</h1>
         </header>
         <Router>
           <div>
@@ -100,6 +99,12 @@ class App extends Component {
 
           </div>
         </Router>
+        <h2>Features</h2>
+        <p>This app allows you to quickly create and complete grocery lists.</p>
+        <p>Specify which store each list belongs to, how much of each item you need, and whether the items have been aquired or not.</p>
+        <p>You may be signed into the same account from multiple devices allowing groups of people to devide and conquer your lists.</p>
+        <p>This app updates in real time, making your trips to the store as painless as possible!</p>
+
 
       </div>
     );
