@@ -4,6 +4,7 @@
   "description": "A grocery list app",
   "main": "server.js",
   "scripts": {
+    "client-install": "cd client && npm install",
     "test": "set NODE_ENV=test&& jasmine",
     "start": "node server.js",
     "server": "nodemon server.js",
@@ -15,7 +16,6 @@
   "devDependencies": {
     "faker": "^4.1.0",
     "jasmine": "^3.4.0",
-    "jest": "^24.8.0",
     "nodemon": "^1.14.6",
     "request": "^2.88.0"
   },
@@ -32,7 +32,9 @@
     "path": "^0.12.7",
     "pg": "^7.4.1",
     "pg-hstore": "^2.3.2",
+    "react": "^16.8.6",
     "react-router-dom": "^5.0.1",
+    "react-scripts": "^3.0.1",
     "sequelize": "^4.32.6",
     "sequelize-cli": "^4.0.0"
   }

@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { Route, Link, BrowserRouter as Router } from 'react-router-dom';
-import logo from './logo.svg';
 //import './App.css';
 
 
@@ -9,6 +8,8 @@ import ListSelect from './components/listSelect';
 
 import UserSignUp from './components/userSignUp';
 import UserSignIn from './components/userSignIn';
+
+import About from "./components/about";
 
 
 const axios = require("axios");
@@ -80,16 +81,21 @@ class App extends Component {
         </header>
         <Router>
           <div>
-            <ul>
-            {currentUser ? (<div>
-                <li><Link to="/lists/new/">New List</Link></li>
-                <li><Link to="/lists/select/">Select List</Link></li>
-                <button onClick={this.handleSignOut}>Sign Out</button>
-              </div>) : (<div>
-                <li><Link to="/users/new/">Create Account</Link></li>
-                <li><Link to="/users/signIn/">Sign In</Link></li>
-              </div>)}
-            </ul>
+            
+            {currentUser ? (<p className="p-nav">
+                <div className="nav-piece btn btn-outline-success"><Link to="/lists/new/">New List</Link></div>
+                <div className="nav-piece btn btn-outline-success"><Link to="/lists/select/">Select List</Link></div>
+                <div className="nav-piece btn btn-outline-success"><Link to="/about/">About</Link></div>
+                <button className="nav-piece btn btn-outline-success" onClick={this.handleSignOut}>Sign Out</button>
+              </p>) : (<p className="p-nav">
+                <div className="nav-piece btn btn-outline-success"><Link to="/users/new/">Create Account</Link></div>
+                <div className="nav-piece btn btn-outline-success"><Link to="/users/signIn/">Sign In</Link></div>
+                <div className="nav-piece btn btn-outline-success"><Link to="/about/">About</Link></div>
+
+              </p>)}
+    
+            <Route path="/about/" component={About} />
+
             <Route path="/lists/new/" component={ListCreate} />
             <Route path="/lists/select/" component={ListSelect} />
 
@@ -99,13 +105,6 @@ class App extends Component {
 
           </div>
         </Router>
-        <h2>Features</h2>
-        <p>This app allows you to quickly create and complete grocery lists.</p>
-        <p>Specify which store each list belongs to, how much of each item you need, and whether the items have been aquired or not.</p>
-        <p>You may be signed into the same account from multiple devices allowing groups of people to devide and conquer your lists.</p>
-        <p>This app updates in real time, making your trips to the store as painless as possible!</p>
-
-
       </div>
     );
   }
