@@ -7,7 +7,7 @@ const Auth = require("../policies/policy");
 module.exports = {
     addItem(req, res, next){
 
-        list.findOne({where: {id: req.body.listId}})
+        list.findOne({where: {id: req.params.listId}})
         .then((list) => {
 
             var auth = new Auth(req.user, list);
@@ -16,7 +16,7 @@ module.exports = {
                 item.create({
                     name: req.body.name,
                     count: req.body.count,
-                    listId: req.body.listId
+                    listId: req.params.listId
                 })
                 .then((item) => {
                     res.json(item);
@@ -68,6 +68,9 @@ module.exports = {
                     .then((item) => {
                         res.json(item);
                     })
+                    .catch((err) => {
+                        console.log(err);
+                    })
                     
                 })
             
@@ -75,6 +78,24 @@ module.exports = {
                 console.log("You are not athorized to do that.");
                 res.redirect("/");
             }
+        })
+    },
+
+    update(req, res, next){
+        console.log(`itemId: ${req.body.itemId} listId: ${req.params.listId} name: ${req.body.name} count: ${req.body.count}`);
+        item.update({name: req.body.name, count: req.body.count},
+            {where: {id: req.body.itemId, listId: req.params.listId}
+        })
+        .then((result) => {
+            item.findOne({where: {id: req.body.itemId, listId: req.params.listId}})
+            .then((item) => {
+                console.log(`item.name; ${item.name}`)
+                res.json(item)
+
+            })
+        })
+        .catch((err) => {
+            console.log(err);
         })
     }
 }

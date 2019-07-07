@@ -20,11 +20,6 @@ class UserSignUp extends Component{
     
     }
 
-    renderUsers(){
-        var ele = document.getElementById("users");
-        ele.innerHTML = this.state.users.map((user) => {return user.email}).join("\n");
-    }
-
       handleSignUp(e){
         e.preventDefault();
         console.log("submitted");
@@ -64,7 +59,6 @@ class UserSignUp extends Component{
 
                     <input type="submit" value="Submit" />
                 </form>
-                <div id="users" onClick={() => this.renderUsers()}>click</div>
         </div>
         )
     }

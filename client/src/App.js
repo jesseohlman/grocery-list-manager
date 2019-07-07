@@ -86,11 +86,11 @@ class App extends Component {
                 <div className="nav-piece btn btn-outline-success"><Link to="/lists/new/">New List</Link></div>
                 <div className="nav-piece btn btn-outline-success"><Link to="/lists/select/">Select List</Link></div>
                 <div className="nav-piece btn btn-outline-success"><Link to="/about/">About</Link></div>
-                <button className="nav-piece btn btn-outline-success" onClick={this.handleSignOut}>Sign Out</button>
+                <button className="last-nav btn btn-outline-success" onClick={this.handleSignOut}>Sign Out</button>
               </p>) : (<p className="p-nav">
                 <div className="nav-piece btn btn-outline-success"><Link to="/users/new/">Create Account</Link></div>
                 <div className="nav-piece btn btn-outline-success"><Link to="/users/signIn/">Sign In</Link></div>
-                <div className="nav-piece btn btn-outline-success"><Link to="/about/">About</Link></div>
+                <div className="last-nav btn btn-outline-success"><Link to="/about/">About</Link></div>
 
               </p>)}
     
