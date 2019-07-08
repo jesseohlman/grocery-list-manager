@@ -16,14 +16,14 @@ module.exports = {
                 userId: req.user.id
             })
             .then((list) => {
-                console.log(`list title: ${list.title}`)
+                res.end();
             })
             .catch((err) => {
                 console.log(err);
             })
         } else {
             console.log("You are not authorized to do that.");
-            res.redirect("/");
+            //res.redirect("/");
         }
     },
 
@@ -81,42 +81,50 @@ module.exports = {
 
     complete(req, res, next){
 
-        var auth = new Auth(req.user);
-
-        if(auth._isOwner()){
             list.findOne({where: {id: req.body.listId}})
             .then((list) => {
-                var change = list.isCompleted === false ?  true : false;
+                var auth = new Auth(req.user, list)._isOwner();
 
-                list.update({isCompleted: change})
-                .then((list) => {
-                    res.json(list);
-                })
-                
+                if(auth){
+
+                    var change = list.isCompleted === false ?  true : false;
+
+                    list.update({isCompleted: change})
+                    .then((list) => {
+                        console.log(list.isCompleted);
+                        res.json(list);
+                    })
+                } else {
+                    console.log("You are not authorized to do that.");
+                    res.end();
+        
+                }
             })
-        } else {
-            console.log("You are not authorized to do that.");
-            res.redirect("/");
-        }
+       
     },
 
     delete(req, res, next){
 
-        var auth = new Auth(req.user);
+        list.findOne({where: {id: req.body.listId}})
+        .then((list) => {
+            var auth = new Auth(req.user, list);
 
-        if(auth._isOwner()){
-            list.destroy({where: {id: req.body.listId}})
-            .then((list) => {
-                res.json(list);
-                console.log("a list has been deleted.");
-            })
-            .catch((err) => {
-                console.log(err);
-            })
-        } else {
-            console.log("You are not authorized to do that.");
-            res.redirect("/");
-        }
+            if(auth._isOwner()){
+                list.destroy({where: {id: req.body.listId}})
+                .then((list) => {
+                    res.json(list);
+                    console.log("a list has been deleted.");
+                })
+                .catch((err) => {
+                    console.log(err);
+                })
+            } else {
+                console.log("You are not authorized to do that.");
+                res.end();
+            }
+        })
     }
+
+
     
 }

@@ -1,13 +1,15 @@
 const request = require("request");
 const sequelize = require("../../src/db/models").sequelize;
-const base = "http://localhost:3000";
+const ServerBase = "http://localhost:5000";
+const ClientBase = "http://localhost:3000";
+
 const server = require("../../server");
 
 const user = require("../../src/db/models").user;
 const axios = require("axios");
 
 
-describe("users: routess", () => {
+describe("users: routes", () => {
     beforeEach((done) => {
         this.user;
 
@@ -29,7 +31,7 @@ describe("users: routess", () => {
         })
     })
 
-    describe("GET /users/signIn/", () => {
+    /*describe("GET /users/signIn/", () => {
         it("should render the sign in page", (done) => {
             request.get(`${base}/users/signIn`, (err, res, body) => {
                 expect(body).toContain("name:");
@@ -37,15 +39,14 @@ describe("users: routess", () => {
             })
             
         })
-    })
+    })*/
 
     
 
     describe("POST /users/submit", () => {
         it("should create a new user", (done) => {
 
-            request.get(`${base}/users/new`, (err, res, body) => {
-                axios.post(`${base}/users/submit`, {
+                axios.post(`${ServerBase}/users/submit`, {
                     name: "Jim",
                     email: "jim@gmail.com",
                     password: "1234567890"
@@ -63,7 +64,6 @@ describe("users: routess", () => {
                     done();
             })
         })
-    })
     })
 
 })

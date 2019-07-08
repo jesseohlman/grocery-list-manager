@@ -22,8 +22,7 @@ module.exports = {
                     res.json(item);
                 })
             } else {
-                console.log("You are not athorized to do that.");
-                res.redirect("/");
+                res.json({errors: {msg: "You are not Authorized to do that"}});
             }
         })
     },
@@ -38,15 +37,13 @@ module.exports = {
                 item.destroy({where: {id: req.body.itemId, listId: req.params.listId}})
                 .then((item) => {
                     res.json(item);
-                    
-                    console.log("an Item has been removed from the list");
                 })
                 .catch((err) => {
                     console.log(err);
                 })
             } else {
-                console.log("You are not athorized to do that.");
-                res.redirect("/");
+                res.json({errors: {msg: "TYou are not Authorized to do that"}});
+
             }
         })
     },
@@ -95,7 +92,7 @@ module.exports = {
             })
         })
         .catch((err) => {
-            console.log(err);
+            console.log(`\n\nerr\n\n ${err}`);
         })
     }
 }

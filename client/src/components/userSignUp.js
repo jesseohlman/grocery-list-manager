@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-
+import './signUp.css';
 const axios = require("axios");
 class UserSignUp extends Component{
     constructor(props){
@@ -45,13 +45,13 @@ class UserSignUp extends Component{
                     <div>
                         <label for="email">Email:</label>
                         <input type="text" name="email" ref={(email) => this.email = email} /><br></br>
-                        <small>must be a valid email</small>
+                        <small className="reqs">must be a valid email</small>
                     </div>
                     
                     <div>
                         <label for="password">Password:</label>
                         <input type="text" name="password" ref={(password) => this.password = password} /><br></br>
-                        <small>must be at least 6 characters in length</small>
+                        <small className="reqs">must be at least 6 characters in length</small>
                     </div>
 
                     <input type="submit" value="Submit" />

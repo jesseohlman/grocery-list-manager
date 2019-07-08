@@ -5,7 +5,8 @@ module.exports = class Authorizer {
     };
 
     _isOwner(){
-        return !!this.user && (this.user.id === this.model.userId);
+        
+        return !!this.user && (this.user.id == this.model.userId);
     }
 
     _isSignedIn(){

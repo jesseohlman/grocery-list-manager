@@ -14,10 +14,10 @@ module.exports = {
             function(email, password, done) {
             user.findOne({ where: {email: email} })
             .then((user) => {
-                if (!user) {return done(null, false); }
+                if (!user) {return done(null, false, {message: 'Invalid emsil or password.'}); }
                 
                 if(!bcrypt.compareSync(password, user.password)){ 
-                    return done(null, false); 
+                    return done(null, false, {message: 'Invalid emsil or password.'}); 
                 } 
                 return done(null, user);
             })

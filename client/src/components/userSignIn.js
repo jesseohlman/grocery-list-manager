@@ -34,6 +34,7 @@ class UserSignIn extends Component{
             <div className="SignInForm">
                 <div>
                 <h2>Sign In</h2>
+                <div>{this.props.message}</div>
                 <form onSubmit={this.handleSubmit}>
                     <div>
                         <label for="email_sign">Email:</label>

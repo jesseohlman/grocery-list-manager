@@ -23,7 +23,7 @@ module.exports = {
         }
 
         function route(req, res){
-            res.redirect("/")
+            res.end();
         }
 
         app.use(middleware)

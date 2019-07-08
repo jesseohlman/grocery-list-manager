@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 
 
-const axios = require("axios");
-
 class ItemUpdate extends Component {
   constructor(props) {
     super(props);

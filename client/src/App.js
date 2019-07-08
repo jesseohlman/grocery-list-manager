@@ -19,7 +19,8 @@ class App extends Component {
     super(props);
 
     this.state = {
-      user: {id: undefined}
+      user: {id: undefined},
+      message: null
     }
 
     this.handleSignOut = this.handleSignOut.bind(this);
@@ -53,20 +54,19 @@ class App extends Component {
   handleSignIn(input){  
      axios.post("/users/signIn", {
        email: input.email,
-       password: input.password
+       password: input.password,
      })
      .then((res) => {
-
       fetch("/users", {credentials: "include"})
       .then(res => res.json())
       .then((user) => {
-        this.setState({user: user});
+        this.setState({user: user, message: res.data.message});
       })
-       console.log("SignIn attempted");
      })
      .catch((err) => {
        console.log(err);
-     })
+     });
+
    }
 
 
@@ -82,17 +82,17 @@ class App extends Component {
         <Router>
           <div>
             
-            {currentUser ? (<p className="p-nav">
-                <div className="nav-piece btn btn-outline-warning text-dark"><Link to="/lists/new/">New List</Link></div>
-                <div className="nav-piece btn btn-outline-warning text-dark"><Link to="/lists/select/">Select List</Link></div>
-                <div className="nav-piece btn btn-outline-warning text-dark"><Link to="/about/">About</Link></div>
-                <button className="nav-piece btn btn-outline-warning text-dark" onClick={this.handleSignOut}>Sign Out</button>
-              </p>) : (<p className="p-nav">
-                <div className="nav-piece text-dark"><Link to="/users/new/">Create Account</Link></div>
-                <div className="nav-piece text-dark"><Link to="/users/signIn/">Sign In</Link></div>
-                <div className="nav-piece text-dark"><Link to="/about/">About</Link></div>
+            {currentUser ? (<section className="p-nav">
+                <div className="nav-piece"><Link to="/lists/new/">New List</Link></div>
+                <div className="nav-piece"><Link to="/lists/select/">Select List</Link></div>
+                <div className="nav-piece"><Link to="/about/">About</Link></div>
+                <a href="#" className="nav-piece" onClick={this.handleSignOut}>Sign Out</a>
+              </section>) : (<section className="p-nav">
+                <div className="nav-piece"><Link to="/users/new/">Create Account</Link></div>
+                <div className="nav-piece"><Link to="/users/signIn/">Sign In</Link></div>
+                <div className="nav-piece"><Link to="/about/">About</Link></div>
 
-              </p>)}
+              </section>)}
     
             <Route path="/about/" component={About} />
 
@@ -100,7 +100,7 @@ class App extends Component {
             <Route path="/lists/select/" component={ListSelect} />
 
             <Route path="/users/new/" component={UserSignUp}/>
-            <Route path="/users/signIn/" render={(props) => <UserSignIn {...props} handleSignIn={this.handleSignIn} />}/>
+            <Route path="/users/signIn/" render={(props) => <UserSignIn {...props} handleSignIn={this.handleSignIn} message={this.state.message}/>}/>
 
 
           </div>

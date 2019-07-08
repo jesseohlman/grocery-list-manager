@@ -12,7 +12,8 @@ class ListView extends Component {
     super(props);
     this.state = {
         items: [],
-        isCompleted: false
+        isCompleted: false,
+        errors: null
     };
 
     this.handleItemAdd = this.handleItemAdd.bind(this);
@@ -39,10 +40,14 @@ class ListView extends Component {
       listId: this.props.listId
     })
     .then((res) => {
+      if(res.data.errors){
+        this.setState({errors: res.data.errors.msg, items: this.state.items, isCompleted: this.state.isCompleted})
+      } else {
         //updates list with new item
         fetch(`/lists/${this.props.listId}/view`, {credentials: "include"})
         .then(res => res.json())
         .then(items => this.setState({items: items, isCompleted: this.state.isCompleted}))
+      }
     })
     .catch((err) => {
       console.log(err);
@@ -107,6 +112,7 @@ class ListView extends Component {
         <div>List Completed: {isCompleted ? (<input type="checkbox"  onChange={(e) => this.handleListComplete(e, this.props.listId)} checked/>) : (<input type="checkbox"  onChange={(e) => this.handleListComplete(e, this.props.listId)}/>)}</div>
 
         <form onSubmit={this.handleItemAdd}>
+        <div>{this.state.errors}</div>
         <div>Add Item</div>
             <label>
             Name:

@@ -1,7 +1,8 @@
+require("dotenv").config();
+
 const passposrtConfig = require("./passport");
 const session = require("express-session");
 const logger = require("morgan");
-//const expressValidator = require("express-validator");
 const path = require("path");
 
 module.exports = {
@@ -12,7 +13,6 @@ module.exports = {
         app.use(express.urlencoded({ extended: true }));
         app.use(express.json());
         app.use(express.static(path.join(__dirname, 'public')));
-        //app.use(expressValidator());
         app.use(session({
             secret: "cookie secret",
             resave: false,
