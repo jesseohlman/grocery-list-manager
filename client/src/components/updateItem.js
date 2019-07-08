@@ -39,7 +39,7 @@ class ItemUpdate extends Component {
             <input type="text" id="name" onChange={this.handleChange} />
             </label>
             <label>
-            Count:
+            Amount:
             <input type="text" id="count" onChange={this.handleChange} />
             </label>
 

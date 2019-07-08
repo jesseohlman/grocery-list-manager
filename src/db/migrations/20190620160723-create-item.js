@@ -13,7 +13,7 @@ module.exports = {
         allowNull: false
       },
       count: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.STRING,
         allowNull: false
       },
       isAquired: {

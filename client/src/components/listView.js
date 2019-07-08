@@ -113,7 +113,7 @@ class ListView extends Component {
             <input type="text" ref={(name) => this.name = name} />
             </label>
             <label>
-            Count:
+            Amount:
             <input type="text" ref={(count) => this.count = count} />
             </label>
 
@@ -128,6 +128,7 @@ class ListView extends Component {
                   item={item}
                   listId={this.props.listId}/>
                   <button onClick={(e) => this.handleItemDelete(e, item.id)}>Remove</button>
+                  <div></div>
                   <Router>
                     <Link to={"/lists/" + this.props.listId + "/updateItem/"} >Update</Link>
                     <Route path={"/lists/" + this.props.listId + "/updateItem/"}

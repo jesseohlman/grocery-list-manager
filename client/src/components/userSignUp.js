@@ -6,41 +6,36 @@ class UserSignUp extends Component{
         super(props);
 
         this.state = {
-            users: []
+            errors: null
         }
 
         this.handleSignUp = this.handleSignUp.bind(this);
     }
 
-    componentDidMount() {
-
-        fetch('/users/user', {credentials: 'include'})//credentials includes req.user in the request
-        .then(res => res.json())
-        .then(users => this.setState({users: this.state.users.concat(users)}));
-    
-    }
-
       handleSignUp(e){
         e.preventDefault();
-        console.log("submitted");
 
         axios.post("/users/submit", {
             name: this.name.value,
             email: this.email.value,
             password: this.password.value
         })
-        .then((res) => {
-            console.log("user submitted")
+        .then((errors) => {
+            if(errors){
+                this.setState({errors: errors.data.errors[0].msg});
+            }
         })
         .catch((err) => {
             console.log(err);
         })
+        e.target.reset();
     }
 
     render(){
         return(
             <div>
                 <h2>Create your account</h2>
+                <div id="err">{this.state.errors}</div>
                 <form onSubmit={this.handleSignUp}>
                     <div>
                         <label for="name">Name:</label>
@@ -49,12 +44,14 @@ class UserSignUp extends Component{
 
                     <div>
                         <label for="email">Email:</label>
-                        <input type="text" name="email" ref={(email) => this.email = email} />
+                        <input type="text" name="email" ref={(email) => this.email = email} /><br></br>
+                        <small>must be a valid email</small>
                     </div>
                     
                     <div>
                         <label for="password">Password:</label>
-                        <input type="text" name="password" ref={(password) => this.password = password} />
+                        <input type="text" name="password" ref={(password) => this.password = password} /><br></br>
+                        <small>must be at least 6 characters in length</small>
                     </div>
 
                     <input type="submit" value="Submit" />
