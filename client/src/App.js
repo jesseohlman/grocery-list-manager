@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Route, Link, BrowserRouter as Router } from 'react-router-dom';
-//import './App.css';
+import './App.css';
 
 
 import ListCreate from './components/listCreate';
@@ -83,14 +83,14 @@ class App extends Component {
           <div>
             
             {currentUser ? (<p className="p-nav">
-                <div className="nav-piece btn btn-outline-success"><Link to="/lists/new/">New List</Link></div>
-                <div className="nav-piece btn btn-outline-success"><Link to="/lists/select/">Select List</Link></div>
-                <div className="nav-piece btn btn-outline-success"><Link to="/about/">About</Link></div>
-                <button className="last-nav btn btn-outline-success" onClick={this.handleSignOut}>Sign Out</button>
+                <div className="nav-piece btn btn-outline-warning text-dark"><Link to="/lists/new/">New List</Link></div>
+                <div className="nav-piece btn btn-outline-warning text-dark"><Link to="/lists/select/">Select List</Link></div>
+                <div className="nav-piece btn btn-outline-warning text-dark"><Link to="/about/">About</Link></div>
+                <button className="nav-piece btn btn-outline-warning text-dark" onClick={this.handleSignOut}>Sign Out</button>
               </p>) : (<p className="p-nav">
-                <div className="nav-piece btn btn-outline-success"><Link to="/users/new/">Create Account</Link></div>
-                <div className="nav-piece btn btn-outline-success"><Link to="/users/signIn/">Sign In</Link></div>
-                <div className="last-nav btn btn-outline-success"><Link to="/about/">About</Link></div>
+                <div className="nav-piece text-dark"><Link to="/users/new/">Create Account</Link></div>
+                <div className="nav-piece text-dark"><Link to="/users/signIn/">Sign In</Link></div>
+                <div className="nav-piece text-dark"><Link to="/about/">About</Link></div>
 
               </p>)}
     
