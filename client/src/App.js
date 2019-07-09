@@ -94,7 +94,7 @@ class App extends Component {
 
               </ul>)}
     
-            <Route path="/" component={About} />
+            <Route path="/about/" component={About} />
 
             <Route path="/lists/new/" component={ListCreate} />
             <Route path="/lists/select/" component={ListSelect} />

@@ -72,6 +72,7 @@ module.exports = {
                 return next(err);
             }
         })(req, res);
+        res.end();
         
     },
 
