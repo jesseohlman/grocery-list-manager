@@ -7,7 +7,6 @@ const passport = require("passport");
 
 module.exports = {
     create(req, res, next){
-        console.log("\n hit user create \n");
         [
             check('email', 'not email').isEmail(),
         check('password', 'password too short').isLength({min: 6})
@@ -15,48 +14,41 @@ module.exports = {
             const errors = validationResult(req);
             
             if(!errors.isEmpty()){
-                console.log("error: in sign up");
                 return res.json({ errors: errors.array() });
             }
-         }
+         } //validation
        
-                User.findOne({where: {email: req.body.email}})
-                .then((user) => {
-                    if(!user){
-                        console.log("in user create user.")
+        User.findOne({where: {email: req.body.email}})
+            .then((user) => {
+                if(!user){
+                    const salt = bcrypt.genSaltSync();
+                    var hashedPassword = bcrypt.hashSync(req.body.password, salt);
 
-                
-                const salt = bcrypt.genSaltSync();
-                var hashedPassword = bcrypt.hashSync(req.body.password, salt);
+                    User.create({
+                        name: req.body.name,
+                        email: req.body.email,
+                        password: hashedPassword
+                    })
+                    .then((user) => {
+                        res.json({errors: [{msg: "You've created an account! Go ahead and sign in!"}]});
 
-                User.create({
-                    name: req.body.name,
-                    email: req.body.email,
-                    password: hashedPassword
-                })
-                .then((user) => {
-                    res.json({errors: [{msg: "You've created an account! Go ahead and sign in!"}]});
+                    })
+                    .catch((err) => {
+                        console.log(err);
+                    });
 
-                })
-                .catch((err) => {
-                    console.log(err);
-                });
-
-                   
-            } else {
-                res.json({errors: [{msg: "There is already a user with that email"}]});
-            }
-        })
+                    
+                } else {
+                    res.json({errors: [{msg: "There is already a user with that email"}]});
+                }
+            })
             
     },
 
     currentUser(req, res, next){
         if(req.user){
-            console.log("yes req.user")
             res.json(req.user);
         } else {
-            console.log("no req.user")
-
             res.json({id: undefined});
         }
     },

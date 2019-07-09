@@ -9,7 +9,8 @@ class ListSelect extends Component {
   constructor(props) {
     super(props);
     this.state = {
-        lists: []
+        lists: [],
+        message: null
     };
 
     this.handleListDelete = this.handleListDelete.bind(this);
@@ -34,6 +35,9 @@ class ListSelect extends Component {
     })
     .then((res) => {
 
+      if(res.data.message){
+        this.setState({message: res.data.message, lists: this.state.lists})
+      }
       fetch("/lists/select", {credentials: "include"})
       .then(res => res.json())
       .then(lists => this.setState({lists: lists}))
@@ -48,7 +52,7 @@ class ListSelect extends Component {
   render() {
     return (
       <div>
-
+        <div>{this.state.message}</div>
        <Router>
             <ul>
                 {this.state.lists.map(list =>

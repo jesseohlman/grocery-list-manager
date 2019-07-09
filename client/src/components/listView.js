@@ -13,7 +13,7 @@ class ListView extends Component {
     this.state = {
         items: [],
         isCompleted: false,
-        errors: null
+        message: null
     };
 
     this.handleItemAdd = this.handleItemAdd.bind(this);
@@ -40,18 +40,19 @@ class ListView extends Component {
       listId: this.props.listId
     })
     .then((res) => {
-      if(res.data.errors){
-        this.setState({errors: res.data.errors.msg, items: this.state.items, isCompleted: this.state.isCompleted})
+      if(res.data.message){
+        this.setState({message: res.data.message.msg, items: this.state.items, isCompleted: this.state.isCompleted})
       } else {
         //updates list with new item
         fetch(`/lists/${this.props.listId}/view`, {credentials: "include"})
         .then(res => res.json())
-        .then(items => this.setState({items: items, isCompleted: this.state.isCompleted}))
+        .then(items => this.setState({items: items, message: this.state.message, isCompleted: this.state.isCompleted}))
       }
     })
     .catch((err) => {
       console.log(err);
     })
+    e.target.reset();
 
   }
 
@@ -60,8 +61,11 @@ class ListView extends Component {
       listId: listId
     })
     .then((res) => {
+      if(res.data.message){
+        this.setState({message: res.data.message, items: this.state.items, isCompleted: this.state.isCompleted})
+      }
       var change = this.state.isCompleted ? false : true;
-      this.setState({items: [...this.state.items], isCompleted: change})
+      this.setState({items: [...this.state.items], message: this.state.message, isCompleted: change})
     })
   }
 
@@ -72,10 +76,12 @@ class ListView extends Component {
       itemId: itemId
     })
     .then((res) => {
-
+      if(res.data.message){
+        this.setState({message: res.data.message, items: this.state.items, isCompleted: this.state.isCompleted});
+      }
       fetch(`/lists/${this.props.listId}/view`, {credentials: "include"})
       .then(res => res.json())
-      .then(items => this.setState({items: items, isCompleted: this.state.isCompleted}))
+      .then(items => this.setState({items: items, message: this.state.message, isCompleted: this.state.isCompleted}))
       //re-renders items with the one removed
     })
     .catch((err) => {
@@ -92,10 +98,13 @@ class ListView extends Component {
       count: item.count
     })
     .then((result) => {
+      if(result.data.message){
+        this.setState({message: result.data.message, items: this.state.items, isCompleted: this.state.isCompleted});
+      }
 
       fetch(`/lists/${this.props.listId}/view`, {credentials: "include"})
       .then(res => res.json())
-      .then(items => this.setState({items: items, isCompleted: this.state.isCompleted}))
+      .then(items => this.setState({items: items, message: this.state.message, isCompleted: this.state.isCompleted}))
       //re-adds the item at the end of the array but it isn't updated
     })
     .catch((err) => {
@@ -112,7 +121,7 @@ class ListView extends Component {
         <div>List Completed: {isCompleted ? (<input type="checkbox"  onChange={(e) => this.handleListComplete(e, this.props.listId)} checked/>) : (<input type="checkbox"  onChange={(e) => this.handleListComplete(e, this.props.listId)}/>)}</div>
 
         <form onSubmit={this.handleItemAdd}>
-        <div>{this.state.errors}</div>
+        <div>{this.state.message}</div>
         <div>Add Item</div>
             <label>
             Name:

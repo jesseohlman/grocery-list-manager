@@ -1,5 +1,5 @@
-const list = require("../db/models").list;
-const item = require("../db/models").item;
+const List = require("../db/models").list;
+const Item = require("../db/models").item;
 
 const Auth = require("../policies/policy");
 
@@ -10,7 +10,7 @@ module.exports = {
         var auth = new Auth(req.user);
 
         if(auth._isSignedIn()){
-            list.create({
+            List.create({
                 title: req.body.title,
                 store: req.body.store,
                 userId: req.user.id
@@ -22,18 +22,17 @@ module.exports = {
                 console.log(err);
             })
         } else {
-            console.log("You are not authorized to do that.");
-            //res.redirect("/");
+            res.json({message: "You are not authorized to do that."});
         }
     },
 
     select(req, res, next){
 
-        list.findAll({where: {userId: req.user.id, isCompleted: false}})
+        List.findAll({where: {userId: req.user.id, isCompleted: false}})
         .then((lists) => {
             var notComplete = lists;
             
-            list.findAll({where: {userId: req.user.id, isCompleted: true}})
+            List.findAll({where: {userId: req.user.id, isCompleted: true}})
             .then((lists) => {
                 var allLists;
                 if(lists){
@@ -57,11 +56,11 @@ module.exports = {
 
     view(req, res, next){
 
-        item.findAll({where: {listId: req.params.id, isAquired: false}})
+        Item.findAll({where: {listId: req.params.id, isAquired: false}})
         .then((items) => {
             var notGot = items;
 
-            item.findAll({where: {listId: req.params.id, isAquired: true}})
+            Item.findAll({where: {listId: req.params.id, isAquired: true}})
             .then((items) => {
                 var list;
                 if(items){
@@ -81,22 +80,20 @@ module.exports = {
 
     complete(req, res, next){
 
-            list.findOne({where: {id: req.body.listId}})
+            List.findOne({where: {id: req.body.listId}})
             .then((list) => {
-                var auth = new Auth(req.user, list)._isOwner();
+                var auth = new Auth(req.user, list);
 
-                if(auth){
+                if(auth._isOwner()){
 
                     var change = list.isCompleted === false ?  true : false;
 
                     list.update({isCompleted: change})
                     .then((list) => {
-                        console.log(list.isCompleted);
                         res.json(list);
                     })
                 } else {
-                    console.log("You are not authorized to do that.");
-                    res.end();
+                    res.json({message: "You are not authorized to do that."})
         
                 }
             })
@@ -105,22 +102,20 @@ module.exports = {
 
     delete(req, res, next){
 
-        list.findOne({where: {id: req.body.listId}})
+        List.findOne({where: {id: req.body.listId}})
         .then((list) => {
             var auth = new Auth(req.user, list);
 
             if(auth._isOwner()){
-                list.destroy({where: {id: req.body.listId}})
+                list.destroy({})
                 .then((list) => {
                     res.json(list);
-                    console.log("a list has been deleted.");
                 })
                 .catch((err) => {
                     console.log(err);
                 })
             } else {
-                console.log("You are not authorized to do that.");
-                res.end();
+                res.json({message: "You are not authorized to do that."});
             }
         })
     }

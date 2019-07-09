@@ -139,7 +139,7 @@ describe("routes : items", () => {
         })
     });
 
-    describe("POST /lists/:listId/updateItem", () => {
+    /*describe("POST /lists/:listId/updateItem", () => {
         it("should update the item with the given info", () => {
             axios.post(`${ServerBase}/lists/${this.list.id}/updateItem`, {
                 itemId: this.item.id,
@@ -161,5 +161,5 @@ describe("routes : items", () => {
             })
         })
               
-    })
+    })*/
 })

@@ -7,6 +7,7 @@ class List extends Component {
   constructor() {
     super();
     this.state = {
+      message: null
     };
 
     this.handleCreate = this.handleCreate.bind(this);
@@ -21,18 +22,24 @@ class List extends Component {
       store: this.store.value
     })
     .then((res) => {
-      console.log(res);
+      if(res.data){
+        this.setState({message: res.data.message});
+      } else {
+        this.setState({message: `List ${this.title.value} has been created`});
+      }
     })
     .catch((err) => {
       console.log(err);
     })
+    e.target.reset();
 
   }
 
   render() {
     return (
       <div>
-        <h2>List</h2>
+        <h2>Create List</h2>
+        <div>{this.state.message}</div>
         <ul>
         <form onSubmit={this.handleCreate}>
         <div>
