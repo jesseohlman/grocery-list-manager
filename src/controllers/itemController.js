@@ -16,7 +16,8 @@ module.exports = {
                 Item.create({
                     name: req.body.name,
                     count: req.body.count,
-                    listId: req.params.listId
+                    listId: req.params.listId,
+                    isAquired: req.body.isAquired || false
                 })
                 .then((item) => {
                     res.json(item);
@@ -75,33 +76,5 @@ module.exports = {
                 res.json({message:"You are not Authorized to do that"});
             }
         })
-    },
-
-    update(req, res, next){
-        console.log(`itemId: ${req.body.itemId} listId: ${req.params.listId} name: ${req.body.name} count: ${req.body.count}`);
-        Item.findOne({where: {id: req.body.itemId, listId: req.params.listId}})
-        .then((item) => {
-            const auth = new Auth(req.user, item);
-
-            if(auth._isOwner()){
-                Item.update({name: req.body.name, count: req.body.count},
-                    {where: {id: req.body.itemId, listId: req.params.listId}
-                })
-                .then((result) => {
-                    Item.findOne({where: {id: req.body.itemId, listId: req.params.listId}})
-                    .then((item) => {
-                        console.log(`item.name; ${item.name}`)
-                        res.json(item)
-        
-                    })
-                })
-                .catch((err) => {
-                    console.log(err);
-                })
-            } else {
-                res.json({message: "You are not authorized to do that."});
-            }
-        })
-       
     }
 }

@@ -9,6 +9,8 @@ router.get("/lists/select", listController.select);
 router.get("/lists/:id/view", listController.view);
 router.post("/lists/:id/complete", listController.complete);
 router.post("/lists/:id/delete", listController.delete);
+router.post("/lists/:id/update", listController.update);
+
 
 
 

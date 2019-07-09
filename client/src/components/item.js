@@ -35,7 +35,7 @@ class Item extends Component {
     var isAquired = this.state.isCompleted;
     return (
       <div>
-        <strong>Item:</strong> {this.state.item.name}<br></br><small><strong>Amount:</strong> {this.state.item.count}</small>
+        <strong>Name:</strong> {this.state.item.name}<br></br><small><strong>Amount:</strong> {this.state.item.count}</small>
         <div><label for="complete">Item Aquired: </label>{isAquired ? (<input type="checkbox" name="complete" onChange={(e) => this.handleComplete(e, this.state.item.id)} checked/>) : (<input type="checkbox" name="complete" onChange={(e) => this.handleComplete(e, this.state.item.id)}/>)} </div>     
       </div>
     )

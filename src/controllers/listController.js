@@ -13,7 +13,8 @@ module.exports = {
             List.create({
                 title: req.body.title,
                 store: req.body.store,
-                userId: req.user.id
+                userId: req.user.id,
+                id: req.body.id
             })
             .then((list) => {
                 res.end();
@@ -118,8 +119,20 @@ module.exports = {
                 res.json({message: "You are not authorized to do that."});
             }
         })
+    },
+
+    update(req, res, nex){
+        List.update({title: req.body.title, store: req.body.store}, 
+            {where: {id: req.body.id}})
+            .then((list) => {
+                List.findOne({where: {id: req.body.id}})
+                .then((list) => {
+                    res.json(list)
+                })
+            })
+            .catch((err) => {
+                console.log(err);
+            })
     }
-
-
     
 }
