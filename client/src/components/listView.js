@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Route, Link, Redirect, BrowserRouter as Router } from 'react-router-dom';
+import { Route, Link, BrowserRouter as Router } from 'react-router-dom';
 
 import Item from "./item";
 import UpdateItem from "./itemUpdate";

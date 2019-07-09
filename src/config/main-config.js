@@ -14,7 +14,7 @@ module.exports = {
         app.use(express.json());
         app.use(express.static(path.join(__dirname, 'public')));
         app.use(session({
-            secret: "cookie secret",
+            secret: process.env.cookieSecret,
             resave: false,
             saveUninitialized: false,
             cookie: {maxAge: 1.21e+9}
