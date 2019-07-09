@@ -1,7 +1,5 @@
 import React, {Component} from "react";
 
-import './signIn.css';
-
 class UserSignIn extends Component{
     constructor(props){
         super(props);
@@ -36,17 +34,17 @@ class UserSignIn extends Component{
                 <h2>Sign In</h2>
                 <div>{this.props.message}</div>
                 <form onSubmit={this.handleSubmit}>
-                    <div>
+                    <div className="form-group">
                         <label for="email_sign">Email:</label>
-                        <input type="text" id="email" onChange={this.handleChange} />
+                        <input className="input-small form-control" type="email" id="email" onChange={this.handleChange} />
                     </div>
                     
-                    <div>
+                    <div className="form-group">
                         <label for="password_sign">Password:</label>
-                        <input type="text" id="password" onChange={this.handleChange} />
+                        <input className="input-small form-control" type="password" id="password" onChange={this.handleChange} />
                     </div>
-
-                    <input type="submit" value="Submit" />
+                    <br></br>
+                    <input className="btn btn-primary" type="submit" value="Submit" />
                 </form>
                 </div>
             </div>

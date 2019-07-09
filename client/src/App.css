@@ -1,14 +1,18 @@
-.p-nav{
-
-}
 
 .App{
   width: 100%;
 }
 
+.input-small{
+  width: 75%;
+}
 
 .nav-piece{
-  float: left;
   padding: 0px 0px 0px 0px;
   margin: 0px 10px 0px 10px
 }
+
+.SignInForm{
+  margin: 0px 0px 0px 15px;
+}
+

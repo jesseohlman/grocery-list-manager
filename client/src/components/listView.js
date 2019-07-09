@@ -3,6 +3,9 @@ import { Route, Link, BrowserRouter as Router } from 'react-router-dom';
 
 import Item from "./item";
 import UpdateItem from "./updateItem";
+import AddItem from "./addItem";
+
+
 
 
 const axios = require("axios");
@@ -31,12 +34,12 @@ class ListView extends Component {
 
 
 
-  handleItemAdd(e){
-    e.preventDefault();
+  handleItemAdd(item){
+    //e.preventDefault();
 
     axios.post(`/lists/${this.props.listId}/addItem`, {
-      name: this.name.value,
-      count: this.count.value,
+      name: item.name,
+      count: item.count,
       listId: this.props.listId
     })
     .then((res) => {
@@ -52,7 +55,7 @@ class ListView extends Component {
     .catch((err) => {
       console.log(err);
     })
-    e.target.reset();
+    //e.target.reset();
 
   }
 
@@ -66,6 +69,8 @@ class ListView extends Component {
       }
       var change = this.state.isCompleted ? false : true;
       this.setState({items: [...this.state.items], message: this.state.message, isCompleted: change})
+
+      this.props.afterListComplete();
     })
   }
 
@@ -119,22 +124,13 @@ class ListView extends Component {
       <div>
 
         <div>List Completed: {isCompleted ? (<input type="checkbox"  onChange={(e) => this.handleListComplete(e, this.props.listId)} checked/>) : (<input type="checkbox"  onChange={(e) => this.handleListComplete(e, this.props.listId)}/>)}</div>
+        <Router>
+          <Link to={"/lists/" + this.props.listId + "/newItem/"}>Add Item</Link>
 
-        <form onSubmit={this.handleItemAdd}>
-        <div>{this.state.message}</div>
-        <div>Add Item</div>
-            <label>
-            Name:
-            <input type="text" ref={(name) => this.name = name} />
-            </label>
-            <label>
-            Amount:
-            <input type="text" ref={(count) => this.count = count} />
-            </label>
-
-            <input type="submit" value="Submit" />
-      </form>
-
+          <Route path={"/lists/" + this.props.listId + "/newItem/"}
+                         render={(props) => 
+                             <AddItem {...props}  message={this.state.message} handleItemAdd={this.handleItemAdd} />}></Route>
+        </Router>
 
           <ul>
               {this.state.items.map((item, index) =>
@@ -142,7 +138,7 @@ class ListView extends Component {
                   <li key={item.id}> <Item handleItemDelete={(e) => this.handleItemDelete(e)} 
                   item={item}
                   listId={this.props.listId}/>
-                  <button onClick={(e) => this.handleItemDelete(e, item.id)}>Remove</button>
+                  <button className="btn btn-danger btn-sm" onClick={(e) => this.handleItemDelete(e, item.id)}>Remove</button>
                   <div></div>
                   <Router>
                     <Link to={"/lists/" + this.props.listId + "/updateItem/"} >Update</Link>

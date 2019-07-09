@@ -42,17 +42,17 @@ class List extends Component {
         <div>{this.state.message}</div>
         <ul>
         <form onSubmit={this.handleCreate}>
-        <div>
+        <div className="from-group">
             <label for="title">List Title:</label>
-            <input type="text" name="title" ref={(title) => this.title = title} />
+            <input className="input-small form-control" type="text" name="title" ref={(title) => this.title = title} />
         </div>
 
-        <div>
+        <div className="from-group">
             <label for="store">Store Name:</label>
-            <input type="text" name="store" ref={(store) => this.store = store} />
+            <input className="input-small form-control" type="text" name="store" ref={(store) => this.store = store} />
         </div>
-        
-        <input type="submit" value="Submit" />
+        <br></br>
+        <input type="submit" className="btn btn-primary" value="Submit" />
       </form>
 
         </ul>

@@ -14,6 +14,8 @@ class ListSelect extends Component {
     };
 
     this.handleListDelete = this.handleListDelete.bind(this);
+    this.afterListComplete = this.afterListComplete.bind(this);
+
   }
 
   componentDidMount() {
@@ -49,6 +51,12 @@ class ListSelect extends Component {
 
   }
 
+  afterListComplete(){
+    fetch("/lists/select", {credentials: "include"})
+      .then(res => res.json())
+      .then(lists => this.setState({lists: lists}))
+  }
+
   render() {
     return (
       <div>
@@ -57,13 +65,14 @@ class ListSelect extends Component {
             <ul>
                 {this.state.lists.map(list =>
                     <li key={list.id}><Link to={"/lists/" + list.id + "/view"}>Title: {list.title}<br></br><small>Store: {list.store}</small></Link>
-                    <small>Completed: {list.isCompleted ? (<div>true</div>) : (<div>false</div>)}</small>
+                    <br></br>
+                    {list.isCompleted && (<div><small>list completed</small></div>)}
+                    <button className="btn btn-danger btn-sm" onClick={(e) => this.handleListDelete(e, list.id)}>Delete</button>
 
                         <Route path={"/lists/" + list.id + "/view"}
                          render={(props) => 
-                             <ListView {...props} listId={list.id} listComplete={list.isCompleted}/>}>
+                             <ListView {...props} listId={list.id} listComplete={list.isCompleted} afterListComplete={this.afterListComplete}/>}>
                         </Route>
-                        <button className="btn btn-primary" onClick={(e) => this.handleListDelete(e, list.id)}>Delete</button>
                     </li>
                     )}
             </ul>

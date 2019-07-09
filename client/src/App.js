@@ -82,17 +82,17 @@ class App extends Component {
         <Router>
           <div>
             
-            {currentUser ? (<section className="p-nav">
-                <div className="nav-piece"><Link to="/lists/new/">New List</Link></div>
-                <div className="nav-piece"><Link to="/lists/select/">Select List</Link></div>
-                <div className="nav-piece"><Link to="/about/">About</Link></div>
-                <a href="#" className="nav-piece" onClick={this.handleSignOut}>Sign Out</a>
-              </section>) : (<section className="p-nav">
-                <div className="nav-piece"><Link to="/users/new/">Create Account</Link></div>
-                <div className="nav-piece"><Link to="/users/signIn/">Sign In</Link></div>
-                <div className="nav-piece"><Link to="/about/">About</Link></div>
+            {currentUser ? (<ul className="list-inline">
+                <li className="nav-piece list-inline-item"><Link to="/lists/new/">New List</Link></li>
+                <li className="nav-piece list-inline-item"><Link to="/lists/select/">Select List</Link></li>
+                <li className="nav-piece list-inline-item"><Link to="/about/">About</Link></li>
+                <li className="nav-piece list-inline-item"><a href="#" onClick={this.handleSignOut}>Sign Out</a></li>
+              </ul>) : (<ul className="list-inline">
+                <li className="nav-piece list-inline-item"><Link to="/users/new/">Create Account</Link></li>
+                <li className="nav-piece list-inline-item"><Link to="/users/signIn/">Sign In</Link></li>
+                <li className="nav-piece list-inline-item"><Link to="/about/">About</Link></li>
 
-              </section>)}
+              </ul>)}
     
             <Route path="/about/" component={About} />
 

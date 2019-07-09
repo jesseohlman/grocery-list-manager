@@ -1,6 +1,7 @@
 import React, {Component} from "react";
-import './signUp.css';
+
 const axios = require("axios");
+
 class UserSignUp extends Component{
     constructor(props){
         super(props);
@@ -33,28 +34,28 @@ class UserSignUp extends Component{
 
     render(){
         return(
-            <div>
+            <div className="SignInForm">
                 <h2>Create your account</h2>
                 <div id="err">{this.state.errors}</div>
                 <form onSubmit={this.handleSignUp}>
-                    <div>
+                    <div className="form-group">
                         <label for="name">Name:</label>
-                        <input type="text" name="name" ref={(name) => this.name = name} />
+                        <input className="input-small form-control" type="text" name="name" ref={(name) => this.name = name} />
                     </div>
 
-                    <div>
+                    <div className="form-group">
                         <label for="email">Email:</label>
-                        <input type="text" name="email" ref={(email) => this.email = email} /><br></br>
-                        <small className="reqs">must be a valid email</small>
+                        <input className="input-small form-control" type="email" name="email" ref={(email) => this.email = email} />
+                        <small className="form-text text-muted">must be a valid email</small>
                     </div>
                     
-                    <div>
+                    <div className="form-group">
                         <label for="password">Password:</label>
-                        <input type="text" name="password" ref={(password) => this.password = password} /><br></br>
-                        <small className="reqs">must be at least 6 characters in length</small>
+                        <input className="input-small form-control" type="password" name="password" ref={(password) => this.password = password} />
+                        <small className="form-text text-muted">must be at least 6 characters in length</small>
                     </div>
 
-                    <input type="submit" value="Submit" />
+                    <input className="btn btn-primary" type="submit" value="Submit" />
                 </form>
         </div>
         )
