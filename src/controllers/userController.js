@@ -54,7 +54,7 @@ module.exports = {
     },
 
     signin(req, res, next){
-        /*passport.authenticate('local', function(err, user, info){
+        passport.authenticate('local', function(err, user, info){
             if(err){
                 res.json({message: "Invalid email or password."})
 
@@ -71,11 +71,11 @@ module.exports = {
                         return next(err); 
                     }
                     res.json({message: "You've been signed in!"});
-
+                    res.end();
                 });
-        })(req, res, next);*/
+        })(req, res, next);
         
-        passport.authenticate('local', { successRedirect: '/', failureRedirect: '/' })        
+       // passport.authenticate('local', { successRedirect: '/', failureRedirect: '/' })        
     },
 
     signOut(req, res, next){

@@ -4,16 +4,17 @@ const passposrtConfig = require("./passport");
 const session = require("express-session");
 const logger = require("morgan");
 const path = require("path");
+const bodyParser = require("body-parser");
 
 module.exports = {
     
     init(app, express){
         app.use(logger('dev'));
 
-        app.use(express.bodyParser());
-        app.use(express.urlencoded({ extended: true }));
+        
+        app.use(bodyParser.express.urlencoded({ extended: true }));
         app.use(express.json());
-        app.use(express.static(path.join(__dirname, 'public')));
+        app.use(express.static(path.join(__dirname, 'client/build')));
         app.use(session({
             secret: process.env.cookieSecret,
             resave: false,
