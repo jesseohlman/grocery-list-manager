@@ -74,8 +74,8 @@ module.exports = {
 
                 });
         })(req, res, next);
-        res.end();
         
+        //passport.authenticate('local', { successRedirect: '/', failureRedirect: '/' })        
     },
 
     signOut(req, res, next){
