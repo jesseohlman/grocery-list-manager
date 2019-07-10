@@ -12,7 +12,7 @@ module.exports = {
         app.use(logger('dev'));
 
         
-        app.use(bodyParser.express.urlencoded({ extended: true }));
+        app.use(bodyParser.urlencoded({ extended: true }));
         app.use(express.json());
         app.use(express.static(path.join(__dirname, 'client/build')));
         app.use(session({
