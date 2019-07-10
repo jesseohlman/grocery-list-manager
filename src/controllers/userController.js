@@ -55,23 +55,25 @@ module.exports = {
 
     signin(req, res, next){
         passport.authenticate('local', function(err, user, info){
-            if(user){
+            if(err){
+                res.json({message: "Invalid email or password."})
 
+                return next(err);
+            }
+            if(!user){
+                res.json({message: "Invalid email or password."})
+
+                return next(err);
+            }
                 req.logIn(user, function(err) {
                     if (err) { 
                         res.json({message: "Invalid email or password."})
                         return next(err); 
                     }
-                    res.json({message: "You've been signed in!"})
-                    return next(user);
+                    res.json({message: "You've been signed in!"});
 
                 });
-            } else {
-                res.json({message: "Invalid email or password."})
-
-                return next(err);
-            }
-        })(req, res);
+        })(req, res, next);
         res.end();
         
     },
