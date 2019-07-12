@@ -13,13 +13,14 @@ class ListSelect extends Component {
     this.state = {
         lists: [],
         message: null,
-        update: false
+        updated: false,
+        update: null
     };
 
     this.handleListDelete = this.handleListDelete.bind(this);
     this.afterListComplete = this.afterListComplete.bind(this);
     this.handleListUpdate = this.handleListUpdate.bind(this);
-
+    this.displayUpdate = this.displayUpdate.bind(this);
 
   }
 
@@ -71,33 +72,23 @@ class ListSelect extends Component {
     .then((result) => {
       fetch("/lists/select", {credentials: "include"})
       .then(res => res.json())
-      .then(lists => this.setState({lists: lists, update: true}))
+      .then(lists => this.setState({lists: lists, updated: true, update: null}))
     })
-    /*this.handleListDelete(list.id);
+  }
 
-    axios.post("/lists/create", {
-      title: list.title,
-      store: list.store,
-      id: list.id
-    })
-    .then((res) => {
-      if(res.data){
-        this.setState({message: res.data.message, lists: this.state.lists});
-      } 
-      fetch("/lists/select", {credentials: "include"})
-      .then(res => res.json())
-      .then(lists => this.setState({lists: lists, message: this.state.message}))
-    })
-    .catch((err) => {
-      console.log(err);
-    })*/
+  displayUpdate(listId){
+    if(listId === this.state.update){
+      this.setState({update: null})
+    } else {
+      this.setState({update: listId});
+    }
   }
 
   render() {
     return (
       <div>
         <div>{this.state.message}</div>
-        <div>{(this.state.update) && <Redirect to="/lists/select"></Redirect>}</div>
+        <div>{(this.state.updated) && <Redirect to="/lists/select"></Redirect>}</div>
         <Router>
             <ul>
                 {this.state.lists.map(list =>
@@ -105,11 +96,10 @@ class ListSelect extends Component {
                       <br></br>
                       {list.isCompleted && (<div><small>list completed</small></div>)}
                       <button className="btn btn-danger btn-sm" onClick={(e) => this.handleListDelete(e, list.id)}>Delete</button>
-                      <Link to={"/lists/" + list.id + "/listUpdate"}>Update</Link>
-                      <Route path={"/lists/" + list.id + "/listUpdate"}
-                          render={(props) => 
-                              <ListUpdate {...props} listId={list.id} handleListUpdate={this.handleListUpdate}/>}>
-                          </Route>
+                      <button className="btn btn-warning btn-sm" onClick={() => this.displayUpdate(list.id)}>Update</button>
+
+                              {(this.state.update === list.id) && (<ListUpdate listId={list.id} handleListUpdate={this.handleListUpdate}/>)}
+                          
 
                           <Route path={"/lists/" + list.id + "/view"}
                           render={(props) => 

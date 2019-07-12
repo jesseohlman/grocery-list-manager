@@ -73,7 +73,7 @@ module.exports = {
                 if(list){
                     res.json(list);
                 } else {
-                    res.json({name: "no Items have been added to this list", count: 0})
+                    res.end();
                 }
             })
         })

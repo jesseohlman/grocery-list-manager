@@ -7,7 +7,7 @@ class UserSignIn extends Component{
         this.state = {
             email: null,
             password: null
-        }
+       }
 
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleChange = this.handleChange.bind(this);
@@ -20,11 +20,16 @@ class UserSignIn extends Component{
 
     handleSubmit(e){
         e.preventDefault();
-
         this.props.handleSignIn(this.state);
         e.target.reset();
     }
 
+    componentWillUnmount(){
+        console.log(this.props.message)
+
+        document.getElementById("msg").innerHTML = null;
+    }
+    
 
 
     render(){
@@ -32,7 +37,7 @@ class UserSignIn extends Component{
             <div className="SignInForm">
                 <div>
                 <h2>Sign In</h2>
-                <div>{this.props.message}</div>
+                <div id="msg">{this.props.message}</div>
                 <form onSubmit={this.handleSubmit}>
                     <div className="form-group">
                         <label for="email_sign">Email:</label>

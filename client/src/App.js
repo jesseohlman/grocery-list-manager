@@ -32,7 +32,7 @@ class App extends Component {
     fetch("/users", {credentials: "include"})
     .then(res => res.json())
     .then((user) => {
-      this.setState({user: user});
+      this.setState({user: user, message: null});
     })
   }
 
@@ -100,7 +100,7 @@ class App extends Component {
             <Route path="/lists/select/" component={ListSelect} />
 
             <Route path="/users/new/" component={UserSignUp}/>
-            <Route path="/users/signIn/" render={(props) => <UserSignIn {...props} handleSignIn={this.handleSignIn} message={this.state.message}/>}/>
+            <Route path="/users/signIn/" render={(props) => <UserSignIn {...props} currentUser={this.state.user} handleSignIn={this.handleSignIn} message={this.state.message}/>}/>
 
 
           </div>

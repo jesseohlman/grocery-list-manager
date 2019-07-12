@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Route, Link, BrowserRouter as Router } from 'react-router-dom';
+import { Route, Link, Redirect, BrowserRouter as Router } from 'react-router-dom';
 
 import Item from "./item";
 import UpdateItem from "./itemUpdate";
@@ -17,13 +17,15 @@ class ListView extends Component {
         items: [],
         isCompleted: false,
         message: null,
+        update: null,
+        itemChanged: false
     };
 
     this.handleItemAdd = this.handleItemAdd.bind(this);
     this.handleItemDelete  =this.handleItemDelete.bind(this);
     this.handleListComplete = this.handleListComplete.bind(this);
     this.handleItemUpdate = this.handleItemUpdate.bind(this);
-
+    this.displayUpdate = this.displayUpdate.bind(this);
 
   }
 
@@ -54,7 +56,6 @@ class ListView extends Component {
     .catch((err) => {
       console.log(err);
     })
-    //e.target.reset();
 
   }
 
@@ -93,12 +94,22 @@ class ListView extends Component {
 
   }
 
+  displayUpdate(itemId){
+    if(itemId === this.state.update){
+      this.setState({update: null});
+    } else {
+      this.setState({update: itemId});
+    }
+    
+  }
+
   
   handleItemUpdate(item){
 
     this.handleItemDelete(item.id);
 
     this.handleItemAdd(item);
+    this.setState({itemChanged: true});
   }
 
   render() {
@@ -106,6 +117,7 @@ class ListView extends Component {
 
     return (
       <div>
+        {(this.state.itemChanged) && (<Redirect to={"/lists/" + this.props.listId + "/newItem/"}></Redirect>)}
         <div>List Completed: {isCompleted ? (<input type="checkbox"  onChange={(e) => this.handleListComplete(e, this.props.listId)} checked/>) : (<input type="checkbox"  onChange={(e) => this.handleListComplete(e, this.props.listId)}/>)}</div>
         <div>{this.state.message}</div>
           <Router>
@@ -113,27 +125,28 @@ class ListView extends Component {
 
             <Route path={"/lists/" + this.props.listId + "/newItem/"}
                           render={(props) => 
-                              <AddItem {...props}  message={this.state.message} handleItemAdd={this.handleItemAdd} />}></Route>
-            </Router>
+                              <AddItem {...props}  message={this.state.message} handleItemAdd={this.handleItemAdd} />}>
+            </Route>
+          </Router>
           <br></br>
           <ul>
             <br></br>
             <h4><strong>Items</strong></h4>
               {this.state.items.map((item, index) =>
               
-                  <li key={item.id}> <Item handleItemDelete={(e) => this.handleItemDelete(e)} 
-                  item={item}
-                  listId={this.props.listId}
-                  afterItemComplete={this.afterItemComplete}/>
-                  <button className="btn btn-danger btn-sm" onClick={(e) => this.handleItemDelete(e, item.id)}>Remove</button>
-                  <Router>
-                    <Link to={"/lists/" + this.props.listId + "/updateItem/"} >Update</Link>
-                    <Route path={"/lists/" + this.props.listId + "/updateItem/"}
-                         render={(props) => 
-                             <UpdateItem {...props} key={index} itemId={item.id} isAquired={item.isAquired} handleItemUpdate={this.handleItemUpdate}/>}></Route>
-                  </Router>
+                  <li> 
+                    <Item 
+                      handleItemDelete={this.handleItemDelete}
+                      item={item}
+                      listId={this.props.listId}
+                      afterItemComplete={this.afterItemComplete}
+                    />
+                    <button className="btn btn-danger btn-sm" onClick={() => this.handleItemDelete(item.id)}>Remove</button>
+                    <button className="btn btn-warning btn-sm" onClick={() => this.displayUpdate(item.id)}>Update</button>
+                    {(this.state.update === item.id) && (<UpdateItem key={index} itemId={item.id} isAquired={item.isAquired} handleItemUpdate={this.handleItemUpdate}/>)}
                   </li>
-                  )}
+
+                )}
           </ul>
           <br></br>
       </div>
