@@ -17,7 +17,7 @@ class ItemUpdate extends Component {
   }
 
   componentDidMount(){
-    document.getElementById("name").focus();
+    document.getElementById("name-update").focus();
   }
 
   handleChange(e){
@@ -37,12 +37,12 @@ class ItemUpdate extends Component {
       <div>
         <form name="form" onSubmit={this.handleSubmit}>
             <div className="form-group">
-              <small><label for="name">Name:</label></small>
-              <input className="input-small form-control" id="name" type="text" name="name" onChange={this.handleChange} placeholder="update name"/>
+              <small><label for="name-update">Name:</label></small>
+              <input className="input-small form-control" id="name-update" type="text" name="name" onChange={this.handleChange} placeholder="update name"/>
             </div>
             <div className="form-group">
-              <small><label for="count">Amount:</label></small>
-              <input className="input-small form-control" id="count" type="text" name="count"  onChange={this.handleChange} placeholder="update amount"/>
+              <small><label for="count-update">Amount:</label></small>
+              <input className="input-small form-control" id="count-update" type="text" name="count"  onChange={this.handleChange} placeholder="update amount"/>
             </div>
               <input type="submit" className="btn btn-primary btn-sm" value="Submit" />
         </form>

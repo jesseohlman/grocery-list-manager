@@ -30,7 +30,7 @@ module.exports = {
                         password: hashedPassword
                     })
                     .then((user) => {
-                        res.json({errors: [{msg: "You've created an account! Go ahead and sign in!"}]});
+                        res.json({message: "You've created an account! Go ahead and sign in!"});
 
                     })
                     .catch((err) => {
@@ -39,7 +39,7 @@ module.exports = {
 
                     
                 } else {
-                    res.json({errors: [{msg: "There is already a user with that email"}]});
+                    res.json({message: "There is already a user with that email"});
                 }
             })
             

@@ -52,7 +52,7 @@ class ListView extends Component {
     })
     .then((res) => {
       if(res.data.message){
-        this.setState({message: res.data.message.msg, items: this.state.items, isCompleted: this.state.isCompleted})
+        this.setState({message: res.data.message, items: this.state.items, isCompleted: this.state.isCompleted})
       } else {
         //updates list with new item
         fetch(`/lists/${this.props.listId}/view`, {credentials: "include"})

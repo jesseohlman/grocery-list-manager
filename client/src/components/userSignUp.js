@@ -7,7 +7,7 @@ class UserSignUp extends Component{
         super(props);
 
         this.state = {
-            errors: null
+            message: null
         }
 
         this.handleSignUp = this.handleSignUp.bind(this);
@@ -15,7 +15,7 @@ class UserSignUp extends Component{
 
     componentDidMount(){
         document.getElementById("name").focus();
-        this.setState({errors: null});
+        this.setState({message: null});
     }
 
       handleSignUp(e){
@@ -26,9 +26,9 @@ class UserSignUp extends Component{
             email: this.email.value,
             password: this.password.value
         })
-        .then((errors) => {
-            if(errors){
-                this.setState({errors: errors.data.errors[0].msg});
+        .then((res) => {
+            if(res){
+                this.setState({message: res.data.message});
             }
         })
         .catch((err) => {
@@ -41,7 +41,7 @@ class UserSignUp extends Component{
         return(
             <div className="SignInForm">
                 <h2>Create your account</h2>
-                <div id="err">{this.state.errors}</div>
+                <div id="err">{this.state.message}</div>
                 <form onSubmit={this.handleSignUp}>
                     <div className="form-group">
                         <label for="name">Name:</label>
