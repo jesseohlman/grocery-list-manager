@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Route, Link, Redirect, BrowserRouter as Router } from 'react-router-dom';
+import {Redirect} from 'react-router-dom';
 
 import ListView from "./listView";
 import ListUpdate from "./listUpdate";
@@ -14,7 +14,8 @@ class ListSelect extends Component {
         lists: [],
         message: null,
         updated: false,
-        update: null
+        update: null,
+        displayList: null
     };
 
     this.handleListDelete = this.handleListDelete.bind(this);
@@ -27,16 +28,18 @@ class ListSelect extends Component {
   componentDidMount() {
     fetch("/lists/select", {credentials: "include"})
     .then(res => res.json())
-    .then(lists => this.setState({lists: this.state.lists.concat(lists)}))
+    .then((lists) => {
+      if(lists.length <= 0){
+        this.setState({message: "You haven't created any lists yet"});
+      } else {
+        this.setState({lists: this.state.lists.concat(lists)})
+      }
+    })
   }
 
-  renderLists(){
-    var ele = document.getElementById("lists");
-    ele.innerHTML = this.state.users.map((user) => {return user.email}).join("\n");
-  }
-
-  handleListDelete(listId){
-
+  handleListDelete(e, listId){
+    e.persist();
+    
     axios.post(`/lists/${listId}/delete`, {
       listId: listId
     })
@@ -47,7 +50,13 @@ class ListSelect extends Component {
       }
       fetch("/lists/select", {credentials: "include"})
       .then(res => res.json())
-      .then(lists => this.setState({lists: lists}))
+      .then((lists) => {
+        if(lists.length <= 0){
+          this.setState({lists: lists, message: "You haven't created any lists yet"});
+        } else {
+          this.setState({lists: lists})
+        }
+      })
       //re-renders items with the one list removed
     })
     .catch((err) => {
@@ -84,15 +93,22 @@ class ListSelect extends Component {
     }
   }
 
+  displayList(listId){
+    if(listId === this.state.displayList){
+      this.setState({displayList: null})
+    } else {
+      this.setState({displayList: listId});
+    }
+  }
+
   render() {
     return (
       <div>
         <div>{this.state.message}</div>
         <div>{(this.state.updated) && <Redirect to="/lists/select"></Redirect>}</div>
-        <Router>
             <ul>
                 {this.state.lists.map(list =>
-                    <li key={list.id}><Link to={"/lists/" + list.id + "/view"}>Title: {list.title}<br></br><small>Store: {list.store}</small></Link>
+                    <li key={list.id}><a href="#" onClick={() => this.displayList(list.id)}>Title: {list.title}<br></br><small>Store: {list.store}</small></a>
                       <br></br>
                       {list.isCompleted && (<div><small>list completed</small></div>)}
                       <button className="btn btn-danger btn-sm" onClick={(e) => this.handleListDelete(e, list.id)}>Delete</button>
@@ -100,17 +116,11 @@ class ListSelect extends Component {
 
                               {(this.state.update === list.id) && (<ListUpdate listId={list.id} handleListUpdate={this.handleListUpdate}/>)}
                           
+                              {(this.state.displayList === list.id) && (<ListView listId={list.id} listComplete={list.isCompleted} afterListComplete={this.afterListComplete}/>)}
 
-                          <Route path={"/lists/" + list.id + "/view"}
-                          render={(props) => 
-                              <ListView {...props} listId={list.id} listComplete={list.isCompleted} afterListComplete={this.afterListComplete}/>}>
-                          </Route>
                     </li>
-                    )}
-            </ul> 
-        </Router>
-                
-     
+                  )}
+            </ul>
       </div>
     );
   }

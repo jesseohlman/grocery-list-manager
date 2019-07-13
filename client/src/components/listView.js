@@ -1,14 +1,11 @@
 import React, { Component } from 'react';
-import { Route, Link, Redirect, BrowserRouter as Router } from 'react-router-dom';
 
 import Item from "./item";
 import UpdateItem from "./itemUpdate";
 import AddItem from "./addItem";
 
-
-
-
 const axios = require("axios");
+
 
 class ListView extends Component {
   constructor(props) {
@@ -18,7 +15,8 @@ class ListView extends Component {
         isCompleted: false,
         message: null,
         update: null,
-        itemChanged: false
+        itemChanged: false,
+        addItem: false
     };
 
     this.handleItemAdd = this.handleItemAdd.bind(this);
@@ -26,13 +24,22 @@ class ListView extends Component {
     this.handleListComplete = this.handleListComplete.bind(this);
     this.handleItemUpdate = this.handleItemUpdate.bind(this);
     this.displayUpdate = this.displayUpdate.bind(this);
+    this.displayItemAdd = this.displayItemAdd.bind(this);
+
 
   }
 
   componentDidMount() {
     fetch(`/lists/${this.props.listId}/view`, {credentials: "include"})
     .then(res => res.json())
-    .then(items => this.setState({items: this.state.items.concat(items), isCompleted: this.props.listComplete}))
+    .then((items) => {
+      if(items.length <= 0){
+        this.setState({message: "This list dosen't contain any items"});
+      } else {
+        this.setState({items: this.state.items.concat(items), isCompleted: this.props.listComplete})
+      }
+    })
+      
   }
 
   handleItemAdd(item){
@@ -68,7 +75,7 @@ class ListView extends Component {
         this.setState({message: res.data.message, items: this.state.items, isCompleted: this.state.isCompleted})
       }
       var change = this.state.isCompleted ? false : true;
-      this.setState({items: [...this.state.items], message: this.state.message, isCompleted: change})
+      this.setState({ isCompleted: change, items: this.state.items, message: this.state.message, update: this.state.update})
 
       this.props.afterListComplete();
     })
@@ -85,13 +92,24 @@ class ListView extends Component {
       }
       fetch(`/lists/${this.props.listId}/view`, {credentials: "include"})
       .then(res => res.json())
-      .then(items => this.setState({items: items, message: this.state.message, isCompleted: this.state.isCompleted}))
+      .then((items) => {
+        if(items.length <= 0){ 
+          this.setState({items: items, message: "This list dosen't contain any items", isCompleted: this.state.isCompleted});
+        } else {
+          this.setState({items: items, message: this.state.message, isCompleted: this.state.isCompleted})
+        }
+      })
       //re-renders items with the one removed
     })
     .catch((err) => {
       console.log(err);
     })
 
+  }
+
+  displayItemAdd(){
+    var change = (this.state.addItem) ? false : true;
+    this.setState({addItem: change, message: null});
   }
 
   displayUpdate(itemId){
@@ -109,7 +127,6 @@ class ListView extends Component {
     this.handleItemDelete(item.id);
 
     this.handleItemAdd(item);
-    this.setState({itemChanged: true});
   }
 
   render() {
@@ -117,25 +134,20 @@ class ListView extends Component {
 
     return (
       <div>
-        {(this.state.itemChanged) && (<Redirect to={"/lists/" + this.props.listId + "/newItem/"}></Redirect>)}
         <div>List Completed: {isCompleted ? (<input type="checkbox"  onChange={(e) => this.handleListComplete(e, this.props.listId)} checked/>) : (<input type="checkbox"  onChange={(e) => this.handleListComplete(e, this.props.listId)}/>)}</div>
-        <div>{this.state.message}</div>
-          <Router>
-            <Link to={"/lists/" + this.props.listId + "/newItem/"}>Add Item</Link>
-
-            <Route path={"/lists/" + this.props.listId + "/newItem/"}
-                          render={(props) => 
-                              <AddItem {...props}  message={this.state.message} handleItemAdd={this.handleItemAdd} />}>
-            </Route>
-          </Router>
+        <br></br>
+        <button className="btn btn-primary" onClick={this.displayItemAdd}>Add Item</button>
+          {(this.state.addItem) && (<AddItem handleItemAdd={this.handleItemAdd} />)}
           <br></br>
-          <ul>
             <br></br>
-            <h4><strong>Items</strong></h4>
+            <h4><strong><u>Items:</u></strong></h4>
+            <div>{this.state.message}</div>
+
+            <ul>
               {this.state.items.map((item, index) =>
-              
                   <li> 
                     <Item 
+                      key={item.id}
                       handleItemDelete={this.handleItemDelete}
                       item={item}
                       listId={this.props.listId}

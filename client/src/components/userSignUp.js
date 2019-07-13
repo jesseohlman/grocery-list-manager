@@ -13,6 +13,11 @@ class UserSignUp extends Component{
         this.handleSignUp = this.handleSignUp.bind(this);
     }
 
+    componentDidMount(){
+        document.getElementById("name").focus();
+        this.setState({errors: null});
+    }
+
       handleSignUp(e){
         e.preventDefault();
 
@@ -40,18 +45,18 @@ class UserSignUp extends Component{
                 <form onSubmit={this.handleSignUp}>
                     <div className="form-group">
                         <label for="name">Name:</label>
-                        <input className="input-small form-control" type="text" name="name" ref={(name) => this.name = name} />
+                        <input className="input-small form-control" type="text" id="name" name="name" ref={(name) => this.name = name} placeholder="your name"/>
                     </div>
 
                     <div className="form-group">
                         <label for="email">Email:</label>
-                        <input className="input-small form-control" type="email" name="email" ref={(email) => this.email = email} />
+                        <input className="input-small form-control" type="email" name="email" ref={(email) => this.email = email} placeholder="valid email"/>
                         <small className="form-text text-muted">must be a valid email</small>
                     </div>
                     
                     <div className="form-group">
                         <label for="password">Password:</label>
-                        <input className="input-small form-control" type="password" name="password" ref={(password) => this.password = password} />
+                        <input className="input-small form-control" type="password" name="password" ref={(password) => this.password = password} placeholder="password"/>
                         <small className="form-text text-muted">must be at least 6 characters in length</small>
                     </div>
 

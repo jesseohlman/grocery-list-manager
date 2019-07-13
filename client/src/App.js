@@ -24,7 +24,7 @@ class App extends Component {
     }
 
     this.handleSignOut = this.handleSignOut.bind(this);
-    this.handleSignIn = this.handleSignIn.bind(this);
+    this.afterSignIn = this.afterSignIn.bind(this);
 
   }
 
@@ -51,24 +51,9 @@ class App extends Component {
     })
   }
 
-  handleSignIn(input){  
-     axios.post("/users/signIn", {
-       email: input.email,
-       password: input.password,
-     })
-     .then((res) => {
-      fetch("/users", {credentials: "include"})
-      .then(res => res.json())
-      .then((user) => {
-        this.setState({user: user, message: res.data.message});
-      })
-     })
-     .catch((err) => {
-       console.log(err);
-     });
-
-   }
-
+  afterSignIn(user){
+    this.setState({user: user});
+  }
 
 
   render() {
@@ -76,36 +61,38 @@ class App extends Component {
     return (
       <div className="App">
       
-        <header className="App-header">
-          <h1 className="App-title">Grocery List</h1>
-        </header>
         <Router>
           <div>
-            
-            {currentUser ? (<ul className="list-inline">
-                <li className="nav-piece list-inline-item"><Link to="/lists/new/">New List</Link></li>
-                <li className="nav-piece list-inline-item"><Link to="/lists/select/">Select List</Link></li>
-                <li className="nav-piece list-inline-item"><Link to="/about/">About</Link></li>
-                <li className="nav-piece list-inline-item"><a href="#" onClick={this.handleSignOut}>Sign Out</a></li>
-              </ul>) : (<ul className="list-inline">
-                <li className="nav-piece list-inline-item"><Link to="/users/new/">Create Account</Link></li>
-                <li className="nav-piece list-inline-item"><Link to="/users/signIn/">Sign In</Link></li>
-                <li className="nav-piece list-inline-item"><Link to="/about/">About</Link></li>
+          <header className="App-header">
+            <h2 className="App-title">Grocery List Manager</h2>
 
-              </ul>)}
-    
-            <Route path="/about/" component={About} />
+              {currentUser ? (<ul className="list-inline">
+                  <li className="nav-piece list-inline-item"><Link to="/lists/new/">New List</Link></li>
+                  <li className="nav-piece list-inline-item"><Link to="/lists/select/">Select List</Link></li>
+                  <li className="nav-piece list-inline-item"><Link to="/about/">About</Link></li>
+                  <li className="nav-piece list-inline-item"><a href="#" onClick={this.handleSignOut}>Sign Out</a></li>
+                </ul>) : (<ul className="list-inline">
+                  <li className="nav-piece list-inline-item"><Link to="/users/new/">Create Account</Link></li>
+                  <li className="nav-piece list-inline-item"><Link to="/users/signIn/">Sign In</Link></li>
+                  <li className="nav-piece list-inline-item"><Link to="/about/">About</Link></li>
+                </ul>)}
+            </header>
 
-            <Route path="/lists/new/" component={ListCreate} />
-            <Route path="/lists/select/" component={ListSelect} />
+            <body>
+              <Route path="/about/" component={About} />
 
-            <Route path="/users/new/" component={UserSignUp}/>
-            <Route path="/users/signIn/" render={(props) => <UserSignIn {...props} currentUser={this.state.user} handleSignIn={this.handleSignIn} message={this.state.message}/>}/>
+              <Route path="/lists/new/" component={ListCreate} />
+              <Route path="/lists/select/" component={ListSelect} />
 
+              <Route path="/users/new/" component={UserSignUp}/>
+              <Route path="/users/signIn/" render={(props) => <UserSignIn {...props} afterSignIn={this.afterSignIn} />}/>
+            </body>
 
           </div>
         </Router>
+        
       </div>
+      
     );
   }
 }

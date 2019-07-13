@@ -16,6 +16,10 @@ class ItemUpdate extends Component {
 
   }
 
+  componentDidMount(){
+    document.getElementById("name").focus();
+  }
+
   handleChange(e){
     this.setState({[e.target.id]: e.target.value, id: this.state.id})
 }
@@ -31,14 +35,14 @@ class ItemUpdate extends Component {
   render() {
     return (
       <div>
-     <form onSubmit={this.handleSubmit}>
+        <form name="form" onSubmit={this.handleSubmit}>
             <div className="form-group">
               <small><label for="name">Name:</label></small>
-              <input className="input-small form-control" id="name" type="text" name="name" onChange={this.handleChange} />
+              <input className="input-small form-control" id="name" type="text" name="name" onChange={this.handleChange} placeholder="update name"/>
             </div>
             <div className="form-group">
               <small><label for="count">Amount:</label></small>
-              <input className="input-small form-control" id="count" type="text" name="count"  onChange={this.handleChange} />
+              <input className="input-small form-control" id="count" type="text" name="count"  onChange={this.handleChange} placeholder="update amount"/>
             </div>
               <input type="submit" className="btn btn-primary btn-sm" value="Submit" />
         </form>

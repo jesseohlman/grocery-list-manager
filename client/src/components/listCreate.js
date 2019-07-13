@@ -13,6 +13,9 @@ class List extends Component {
     this.handleCreate = this.handleCreate.bind(this);
   }
 
+  componentDidMount(){
+    document.getElementById("title").focus();
+  }
 
   handleCreate(e){
     e.preventDefault();
@@ -44,12 +47,12 @@ class List extends Component {
         <form onSubmit={this.handleCreate}>
         <div className="from-group">
             <label for="title">List Title:</label>
-            <input className="input-small form-control" type="text" name="title" ref={(title) => this.title = title} />
+            <input className="input-small form-control" id="title" type="text" name="title" ref={(title) => this.title = title} placeholder="title"/>
         </div>
 
         <div className="from-group">
             <label for="store">Store Name:</label>
-            <input className="input-small form-control" type="text" name="store" ref={(store) => this.store = store} />
+            <input className="input-small form-control" type="text" name="store" ref={(store) => this.store = store} placeholder="store"/>
         </div>
         <br></br>
         <input type="submit" className="btn btn-primary" value="Submit" />

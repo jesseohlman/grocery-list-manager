@@ -71,11 +71,9 @@ module.exports = {
                         return next(err); 
                     }
                     res.json({message: "You've been signed in!"});
-                    res.end();
                 });
         })(req, res, next);
         
-       // passport.authenticate('local', { successRedirect: '/', failureRedirect: '/' })        
     },
 
     signOut(req, res, next){
