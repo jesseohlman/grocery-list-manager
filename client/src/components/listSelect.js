@@ -40,8 +40,6 @@ class ListSelect extends Component {
     const controller = new AbortController();
     const signal = controller.signal;
 
-    setTimeout(() => controller.abort(), 5000);
-
     fetch("/lists/select", {credentials: "include", signal})
     .then(res => res.json())
     .then((lists) => {

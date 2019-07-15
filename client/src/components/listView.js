@@ -46,8 +46,6 @@ class ListView extends Component {
     const controller = new AbortController();
     const signal = controller.signal;
 
-    setTimeout(() => controller.abort(), 5000);
-
     fetch(`/lists/${this.props.listId}/view`, {credentials: "include", signal})
     .then(res => res.json())
     .then((items) => {
