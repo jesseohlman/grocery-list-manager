@@ -4,7 +4,6 @@ import {Link, Redirect} from 'react-router-dom';
 import ListView from "./listView";
 import ListUpdate from "./listUpdate";
 
-const AbortController = require("abort-controller");
 const axios = require("axios");
 
 class ListSelect extends Component {
@@ -37,12 +36,8 @@ class ListSelect extends Component {
   }
 
   getLists() {
-    const controller = new AbortController();
-    const signal = controller.signal;
 
-    setTimeout(() => controller.abort(), 5000);
-
-    fetch("/lists/select", {credentials: "include", signal})
+    fetch("/lists/select", {credentials: "include"})
     .then(res => res.json())
     .then((lists) => {
       if(lists.length <= 0){

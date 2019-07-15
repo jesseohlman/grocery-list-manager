@@ -4,7 +4,6 @@ import Item from "./item";
 import UpdateItem from "./itemUpdate";
 import AddItem from "./addItem";
 
-const AbortController = require("abort-controller");
 const axios = require("axios");
 
 
@@ -43,12 +42,9 @@ class ListView extends Component {
 
 
   getItems() {
-    const controller = new AbortController();
-    const signal = controller.signal;
 
-    setTimeout(() => controller.abort(), 5000);
 
-    fetch(`/lists/${this.props.listId}/view`, {credentials: "include", signal})
+    fetch(`/lists/${this.props.listId}/view`, {credentials: "include"})
     .then(res => res.json())
     .then((items) => {
       if(items.length <= 0){
