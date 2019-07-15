@@ -4,6 +4,7 @@ import Item from "./item";
 import UpdateItem from "./itemUpdate";
 import AddItem from "./addItem";
 
+const AbortController = require("abort-controller");
 const axios = require("axios");
 
 
@@ -31,6 +32,11 @@ class ListView extends Component {
   }
   componentDidMount(){
     this.getItems();
+
+    const controller = new AbortController();
+    this.signal = controller.signal;
+    setTimeout(() => controller.abort(), 5000);
+
     this.timer = setInterval(()=> this.getItems(), 6000);
     //updates state every 6 seconds
   }
@@ -43,10 +49,9 @@ class ListView extends Component {
 
   getItems() {
 
-    setTimeout(() => controller.abort(), 5000);
+    const signal = this.signal;
 
-
-    fetch(`/lists/${this.props.listId}/view`, {credentials: "include"})
+    fetch(`/lists/${this.props.listId}/view`, {credentials: "include", signal})
     .then(res => res.json())
     .then((items) => {
       if(items.length <= 0){
