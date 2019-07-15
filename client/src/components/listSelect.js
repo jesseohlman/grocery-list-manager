@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {Redirect} from 'react-router-dom';
+import {Link, Redirect} from 'react-router-dom';
 
 import ListView from "./listView";
 import ListUpdate from "./listUpdate";
@@ -22,17 +22,28 @@ class ListSelect extends Component {
     this.afterListComplete = this.afterListComplete.bind(this);
     this.handleListUpdate = this.handleListUpdate.bind(this);
     this.displayUpdate = this.displayUpdate.bind(this);
+    this.getLists = this.getLists.bind(this);
 
   }
+  componentDidMount(){
+    this.getLists();
+    this.timer = setInterval(()=> this.getLists(), 20000);
+    //updates state every 20 seconds
+  }
 
-  componentDidMount() {
+  componentWillUnmount(){
+    clearInterval(this.timer);
+    this.timer = null;
+  }
+
+  getLists() {
     fetch("/lists/select", {credentials: "include"})
     .then(res => res.json())
     .then((lists) => {
       if(lists.length <= 0){
         this.setState({message: "You haven't created any lists yet"});
       } else {
-        this.setState({lists: this.state.lists.concat(lists)})
+        this.setState({lists: lists})
       }
     })
   }
@@ -108,7 +119,8 @@ class ListSelect extends Component {
         <div>{(this.state.updated) && <Redirect to="/lists/select"></Redirect>}</div>
             <ul>
                 {this.state.lists.map(list =>
-                    <li key={list.id}><a href="#" onClick={() => this.displayList(list.id)}>Title: {list.title}<br></br><small>Store: {list.store}</small></a>
+                    <li key={list.id}>
+                      <Link to="/lists/select" onClick={() => this.displayList(list.id)}>Title: {list.title}<br></br><small>Store: {list.store}</small></Link>
                       <br></br>
                       {list.isCompleted && (<div><small>list completed</small></div>)}
                       <button className="btn btn-danger btn-sm" onClick={(e) => this.handleListDelete(e, list.id)}>Delete</button>

@@ -78,7 +78,7 @@ module.exports = {
 
     signOut(req, res, next){
         req.session.destroy(function (err) {
-            res.redirect("/");
+            res.json({signedOut: true});
         });
     }
 }

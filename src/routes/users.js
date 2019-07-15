@@ -6,8 +6,7 @@ const { check, validationResult } = require('express-validator');
 
 
 router.post("/users/submit", userController.create);
-router.post("/users/signIn", userController.signin, function(req, res){
-    console.log("passport user", req.user);});
+router.post("/users/signIn", userController.signin);
 router.get("/users/signOut", userController.signOut);
 router.get("/users", userController.currentUser);
 

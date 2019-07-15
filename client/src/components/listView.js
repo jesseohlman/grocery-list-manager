@@ -25,18 +25,30 @@ class ListView extends Component {
     this.handleItemUpdate = this.handleItemUpdate.bind(this);
     this.displayUpdate = this.displayUpdate.bind(this);
     this.displayItemAdd = this.displayItemAdd.bind(this);
+    this.getItems = this.getItems.bind(this);
 
 
   }
+  componentDidMount(){
+    this.getItems();
+    this.timer = setInterval(()=> this.getItems(), 6000);
+    //updates state every 6 seconds
+  }
 
-  componentDidMount() {
+  componentWillUnmount(){
+    clearInterval(this.timer);
+    this.timer = null;
+  }
+
+
+  getItems() {
     fetch(`/lists/${this.props.listId}/view`, {credentials: "include"})
     .then(res => res.json())
     .then((items) => {
       if(items.length <= 0){
         this.setState({message: "This list dosen't contain any items"});
       } else {
-        this.setState({items: this.state.items.concat(items), isCompleted: this.props.listComplete})
+        this.setState({items: items, isCompleted: this.props.listComplete})
       }
     })
       

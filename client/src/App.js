@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { Route, Link, BrowserRouter as Router } from 'react-router-dom';
 import './App.css';
 
-
 import ListCreate from './components/listCreate';
 import ListSelect from './components/listSelect';
 
@@ -70,7 +69,7 @@ class App extends Component {
                   <li className="nav-piece list-inline-item"><Link to="/lists/new/">New List</Link></li>
                   <li className="nav-piece list-inline-item"><Link to="/lists/select/">Select List</Link></li>
                   <li className="nav-piece list-inline-item"><Link to="/about/">About</Link></li>
-                  <li className="nav-piece list-inline-item"><a href="#" onClick={this.handleSignOut}>Sign Out</a></li>
+                  <li className="nav-piece list-inline-item"><Link to="/" onClick={this.handleSignOut}>Sign Out</Link></li>
                 </ul>) : (<ul className="list-inline">
                   <li className="nav-piece list-inline-item"><Link to="/users/new/">Create Account</Link></li>
                   <li className="nav-piece list-inline-item"><Link to="/users/signIn/">Sign In</Link></li>
