@@ -4,7 +4,6 @@ import Item from "./item";
 import UpdateItem from "./itemUpdate";
 import AddItem from "./addItem";
 
-const AbortController = require("abort-controller");
 const axios = require("axios");
 
 
@@ -28,8 +27,6 @@ class ListView extends Component {
     this.displayItemAdd = this.displayItemAdd.bind(this);
     this.getItems = this.getItems.bind(this);
 
-
-    this.controller = new AbortController();
   }
   componentDidMount(){
     this.getItems();
@@ -40,14 +37,13 @@ class ListView extends Component {
 
   componentWillUnmount(){
     clearInterval(this.timer);
-    this.controller.abort();
     this.timer = null;
   }
 
 
   getItems() {
 
-    fetch(`/lists/${this.props.listId}/view`, {credentials: "include", signal: this.controller.signal})
+    fetch(`/lists/${this.props.listId}/view`, {credentials: "include"})
     .then(res => res.json())
     .then((items) => {
       if(items.length <= 0){
