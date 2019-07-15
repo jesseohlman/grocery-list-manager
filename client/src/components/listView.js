@@ -43,6 +43,8 @@ class ListView extends Component {
 
   getItems() {
 
+    setTimeout(() => controller.abort(), 5000);
+
 
     fetch(`/lists/${this.props.listId}/view`, {credentials: "include"})
     .then(res => res.json())
