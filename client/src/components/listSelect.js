@@ -4,7 +4,7 @@ import {Link, Redirect} from 'react-router-dom';
 import ListView from "./listView";
 import ListUpdate from "./listUpdate";
 
-
+const AbortController = require("abort-controller");
 const axios = require("axios");
 
 class ListSelect extends Component {
@@ -37,11 +37,16 @@ class ListSelect extends Component {
   }
 
   getLists() {
-    fetch("/lists/select", {credentials: "include"})
+    const controller = new AbortController();
+    const signal = controller.signal;
+
+    setTimeout(() => controller.abort(), 5000);
+
+    fetch("/lists/select", {credentials: "include", signal})
     .then(res => res.json())
     .then((lists) => {
       if(lists.length <= 0){
-        this.setState({message: "You haven't created any lists yet"});
+        this.setState({lists: lists, message: "You haven't created any lists yet"});
       } else {
         this.setState({lists: lists})
       }
@@ -55,31 +60,19 @@ class ListSelect extends Component {
       listId: listId
     })
     .then((res) => {
-
       if(res.data.message){
         this.setState({message: res.data.message, lists: this.state.lists})
       }
-      fetch("/lists/select", {credentials: "include"})
-      .then(res => res.json())
-      .then((lists) => {
-        if(lists.length <= 0){
-          this.setState({lists: lists, message: "You haven't created any lists yet"});
-        } else {
-          this.setState({lists: lists})
-        }
-      })
+      this.getLists();
       //re-renders items with the one list removed
     })
     .catch((err) => {
       console.log(err);
     })
-
   }
 
   afterListComplete(){
-    fetch("/lists/select", {credentials: "include"})
-      .then(res => res.json())
-      .then(lists => this.setState({lists: lists}))
+    this.getLists
   }
 
   handleListUpdate(list){

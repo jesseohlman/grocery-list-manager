@@ -4,6 +4,7 @@ import Item from "./item";
 import UpdateItem from "./itemUpdate";
 import AddItem from "./addItem";
 
+const AbortController = require("abort-controller");
 const axios = require("axios");
 
 
@@ -42,13 +43,18 @@ class ListView extends Component {
 
 
   getItems() {
-    fetch(`/lists/${this.props.listId}/view`, {credentials: "include"})
+    const controller = new AbortController();
+    const signal = controller.signal;
+
+    setTimeout(() => controller.abort(), 5000);
+
+    fetch(`/lists/${this.props.listId}/view`, {credentials: "include", signal})
     .then(res => res.json())
     .then((items) => {
       if(items.length <= 0){
-        this.setState({message: "This list dosen't contain any items"});
+        this.setState({items: items, message: "This list dosen't contain any items"});
       } else {
-        this.setState({items: items, isCompleted: this.props.listComplete})
+        this.setState({items: items, isCompleted: this.props.listComplete, message: null})
       }
     })
       
@@ -67,9 +73,7 @@ class ListView extends Component {
         this.setState({message: res.data.message, items: this.state.items, isCompleted: this.state.isCompleted})
       } else {
         //updates list with new item
-        fetch(`/lists/${this.props.listId}/view`, {credentials: "include"})
-        .then(res => res.json())
-        .then(items => this.setState({items: items, message: this.state.message, isCompleted: this.state.isCompleted}))
+        this.getItems();
       }
     })
     .catch((err) => {
@@ -102,15 +106,7 @@ class ListView extends Component {
       if(res.data.message){
         this.setState({message: res.data.message, items: this.state.items, isCompleted: this.state.isCompleted});
       }
-      fetch(`/lists/${this.props.listId}/view`, {credentials: "include"})
-      .then(res => res.json())
-      .then((items) => {
-        if(items.length <= 0){ 
-          this.setState({items: items, message: "This list dosen't contain any items", isCompleted: this.state.isCompleted});
-        } else {
-          this.setState({items: items, message: this.state.message, isCompleted: this.state.isCompleted})
-        }
-      })
+      this.getItems();
       //re-renders items with the one removed
     })
     .catch((err) => {
