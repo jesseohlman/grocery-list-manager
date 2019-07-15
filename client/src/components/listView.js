@@ -29,13 +29,10 @@ class ListView extends Component {
     this.getItems = this.getItems.bind(this);
 
 
+    this.controller = new AbortController();
   }
   componentDidMount(){
     this.getItems();
-
-    const controller = new AbortController();
-    this.signal = controller.signal;
-    setTimeout(() => controller.abort(), 5000);
 
     this.timer = setInterval(()=> this.getItems(), 6000);
     //updates state every 6 seconds
@@ -43,15 +40,14 @@ class ListView extends Component {
 
   componentWillUnmount(){
     clearInterval(this.timer);
+    this.controller.abort();
     this.timer = null;
   }
 
 
   getItems() {
 
-    const signal = this.signal;
-
-    fetch(`/lists/${this.props.listId}/view`, {credentials: "include", signal})
+    fetch(`/lists/${this.props.listId}/view`, {credentials: "include", signal: this.controller.signal})
     .then(res => res.json())
     .then((items) => {
       if(items.length <= 0){
