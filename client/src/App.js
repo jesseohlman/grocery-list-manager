@@ -36,17 +36,20 @@ class App extends Component {
   }
 
   handleSignOut(){
+    if (window.confirm('Are you sure you wish to sign out? All users currently signed in to this account will also be signed out!')){
     axios.get("/users/signOut")
     .then((res) => {
-      this.setState({user: {id: undefined}})
+      this.setState({user: {id: undefined}, message: "You've been signed out. Most functions will be unavliable until you sign back in!"})
     })
     .catch((err) => {
       console.log(err);
     })
   }
 
+  }
+
   afterSignIn(user){
-    this.setState({user: user});
+    this.setState({user: user, message: null});
     //set current user
   }
 
@@ -74,6 +77,7 @@ class App extends Component {
             </header>
 
             <body>
+              <div>{this.state.message}</div>
               <Route path="/about/" component={About} />
 
               <Route path="/lists/new/" component={ListCreate} />

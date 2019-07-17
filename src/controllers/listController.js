@@ -136,7 +136,6 @@ module.exports = {
                 })
             } else {
                 res.json({message: "You are not authorized to do that."});
-
             }
         })
         .catch((err) => {
