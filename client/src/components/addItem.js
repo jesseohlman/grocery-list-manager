@@ -20,30 +20,32 @@ class ItemUpdate extends Component {
 
   handleChange(e){
     this.setState({[e.target.id]: e.target.value})
-}
+  }
 
-  
   handleSubmit(e){
-        e.preventDefault();
-        this.props.handleItemAdd( this.state);
-        e.target.reset();
+    e.preventDefault();
+    this.props.handleItemAdd(this.state);
+    e.target.reset();
   }
 
 
   render() {
     return (
       <div>
-       <form onSubmit={this.handleSubmit}>
+        <form onSubmit={this.handleSubmit}>
           <div>{this.props.message}</div>
-            <div className="form-group">
-              <small><label for="name">Name:</label></small>
-              <input className="input-small form-control" id="name" type="text" name="name" onChange={this.handleChange} placeholder="name"/>
-            </div>
-            <div className="form-group">
-              <small><label for="count">Amount:</label></small>
-              <input className="input-small form-control" id="count" type="text" name="count" onChange={this.handleChange} placeholder="amount"/>
-            </div>
-              <input type="submit" className="btn btn-primary btn-sm" value="Submit" />
+
+          <div className="form-group">
+            <small><label for="name">Name:</label></small>
+            <input className="input-small form-control" id="name" type="text" name="name" onChange={this.handleChange} placeholder="name"/>
+          </div>
+
+          <div className="form-group">
+            <small><label for="count">Amount:</label></small>
+            <input className="input-small form-control" id="count" type="text" name="count" onChange={this.handleChange} placeholder="amount"/>
+          </div>
+
+          <input type="submit" className="btn btn-primary btn-sm" value="Submit" />
         </form>
       </div>
     )

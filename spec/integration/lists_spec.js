@@ -193,15 +193,15 @@ describe("users: routes", () => {
                     .then((res) => {
                         expect(res.data.length).toBe(0);
                         done();
+                    })
                 })
             })
+            .catch((err) => {
+                console.log(err);
+                done();
+            })
         })
-        .catch((err) => {
-            console.log(err);
-            done();
-        })
-    })
-    })
+    });
 
     describe("POST /lists/:id/update", () => {
         it("should update the list with the given values", (done) => {

@@ -31,16 +31,14 @@ module.exports = {
                     })
                     .then((user) => {
                         res.json({message: "You've created an account! Go ahead and sign in!"});
-
-                    })
-                    .catch((err) => {
-                        console.log(err);
-                    });
-
-                    
+                    })  
                 } else {
                     res.json({message: "There is already a user with that email"});
                 }
+            })
+            .catch((err) => {
+                console.log(err);
+                res.end();
             })
             
     },

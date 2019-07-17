@@ -6,7 +6,6 @@ import AddItem from "./addItem";
 
 const axios = require("axios");
 
-
 class ListView extends Component {
   constructor(props) {
     super(props);
@@ -14,49 +13,48 @@ class ListView extends Component {
         items: [],
         isCompleted: false,
         message: null,
-        update: null,
+        displayItemUpdate: null,
         itemChanged: false,
-        addItem: false
+        displayAddItem: false
     };
 
     this.handleItemAdd = this.handleItemAdd.bind(this);
     this.handleItemDelete  =this.handleItemDelete.bind(this);
     this.handleListComplete = this.handleListComplete.bind(this);
     this.handleItemUpdate = this.handleItemUpdate.bind(this);
-    this.displayUpdate = this.displayUpdate.bind(this);
-    this.displayItemAdd = this.displayItemAdd.bind(this);
+    this.toggleItemUpdate = this.toggleItemUpdate.bind(this);
+    this.toggleItemAdd = this.toggleItemAdd.bind(this);
     this.getItems = this.getItems.bind(this);
 
   }
   componentDidMount(){
     this.getItems();
-
-    this.timer = setInterval(()=> this.getItems(), 6000);
-    //updates state every 6 seconds
+    this.timer = setInterval(()=> this.getItems(), 10000);
+    //updates state every 10 seconds
   }
 
   componentWillUnmount(){
     clearInterval(this.timer);
     this.timer = null;
+    //stops timer refresh
   }
 
-
   getItems() {
-
     fetch(`/lists/${this.props.listId}/view`, {credentials: "include"})
     .then(res => res.json())
     .then((items) => {
       if(items.length <= 0){
-        this.setState({items: items, message: "This list dosen't contain any items"});
+        this.setState({items: items, isCompleted: this.props.listComplete, message: "This list dosen't contain any items"});
       } else {
         this.setState({items: items, isCompleted: this.props.listComplete, message: null})
       }
     })
-      
+    .catch((err) => {
+      console.log(err);
+    })
   }
 
   handleItemAdd(item){
-
     axios.post(`/lists/${this.props.listId}/addItem`, {
       name: item.name,
       count: item.count,
@@ -65,10 +63,10 @@ class ListView extends Component {
     })
     .then((res) => {
       if(res.data.message){
-        this.setState({message: res.data.message, items: this.state.items, isCompleted: this.state.isCompleted})
+        this.setState({message: res.data.message})
       } else {
-        //updates list with new item
         this.getItems();
+        //updates list with new item
       }
     })
     .catch((err) => {
@@ -78,28 +76,31 @@ class ListView extends Component {
   }
 
   handleListComplete(e, listId){
+    e.persist(); //allows for asynch
+
     axios.post(`/lists/${this.props.listId}/complete`, {
       listId: listId
     })
     .then((res) => {
       if(res.data.message){
-        this.setState({message: res.data.message, items: this.state.items, isCompleted: this.state.isCompleted})
+        this.setState({message: res.data.message})
       }
+      //changes completed from false to true and vise versa
       var change = this.state.isCompleted ? false : true;
-      this.setState({ isCompleted: change, items: this.state.items, message: this.state.message, update: this.state.update})
+      this.setState({isCompleted: change})
 
-      this.props.afterListComplete();
+      this.props.afterListComplete(this.state.isCompleted);
+      //re-renders lists
     })
   }
 
   handleItemDelete(itemId){
-
     axios.post(`/lists/${this.props.listId}/deleteItem`, {
       itemId: itemId
     })
     .then((res) => {
       if(res.data.message){
-        this.setState({message: res.data.message, items: this.state.items, isCompleted: this.state.isCompleted});
+        this.setState({message: res.data.message});
       }
       this.getItems();
       //re-renders items with the one removed
@@ -107,62 +108,68 @@ class ListView extends Component {
     .catch((err) => {
       console.log(err);
     })
-
   }
 
-  displayItemAdd(){
-    var change = (this.state.addItem) ? false : true;
-    this.setState({addItem: change, message: null});
+  toggleItemAdd(){
+    var change = (this.state.displayAddItem) ? false : true;
+    this.setState({displayAddItem: change, message: null});
   }
 
-  displayUpdate(itemId){
-    if(itemId === this.state.update){
-      this.setState({update: null});
+  toggleItemUpdate(itemId){
+    if(itemId === this.state.displayItemUpdate){
+      this.setState({displayItemUpdate: null});
     } else {
-      this.setState({update: itemId});
+      this.setState({displayItemUpdate: itemId});
     }
-    
   }
 
-  
   handleItemUpdate(item){
-
     this.handleItemDelete(item.id);
-
     this.handleItemAdd(item);
   }
 
   render() {
-    var isCompleted = this.state.isCompleted;
-
     return (
       <div>
-        <div>List Completed: {isCompleted ? (<input type="checkbox"  onChange={(e) => this.handleListComplete(e, this.props.listId)} checked/>) : (<input type="checkbox"  onChange={(e) => this.handleListComplete(e, this.props.listId)}/>)}</div>
+        <div>
+          List Completed: {this.state.isCompleted ? 
+          (<input type="checkbox"  onChange={(e) => this.handleListComplete(e, this.props.listId)} checked/>) :
+          (<input type="checkbox"  onChange={(e) => this.handleListComplete(e, this.props.listId)}/>)}
+        </div>
         <br></br>
-        <button className="btn btn-primary" onClick={this.displayItemAdd}>Add Item</button>
-          {(this.state.addItem) && (<AddItem handleItemAdd={this.handleItemAdd} />)}
+
+        <button className="btn btn-primary" onClick={this.toggleItemAdd}>Add Item</button>
+          {(this.state.displayAddItem) && (<AddItem handleItemAdd={this.handleItemAdd} />)}
           <br></br>
-            <br></br>
-            <h4><strong><u>Items:</u></strong></h4>
-            <div>{this.state.message}</div>
+          <br></br>
+
+          <h4><strong><u>Items:</u></strong></h4>
+          <div>{this.state.message}</div>
 
             <ul>
+              
               {this.state.items.map((item, index) =>
-                  <li> 
-                    <Item 
-                      key={item.id}
-                      handleItemDelete={this.handleItemDelete}
-                      item={item}
-                      listId={this.props.listId}
-                      afterItemComplete={this.afterItemComplete}
-                    />
-                    <button className="btn btn-danger btn-sm" onClick={() => this.handleItemDelete(item.id)}>Remove</button>
-                    <button className="btn btn-warning btn-sm" onClick={() => this.displayUpdate(item.id)}>Update</button>
-                    {(this.state.update === item.id) && (<UpdateItem key={index} itemId={item.id} isAquired={item.isAquired} handleItemUpdate={this.handleItemUpdate}/>)}
-                  </li>
+                <li> 
+                  <Item 
+                    key={item.id}
+                    handleItemDelete={this.handleItemDelete}
+                    item={item}
+                    listId={this.props.listId}
+                    afterItemComplete={this.afterItemComplete}
+                  />
+                  <button className="btn btn-danger btn-sm" onClick={() => this.handleItemDelete(item.id)}>Remove</button>
+                  <button className="btn btn-warning btn-sm" onClick={() => this.toggleItemUpdate(item.id)}>Update</button>
 
-                )}
-          </ul>
+                  {(this.state.displayItemUpdate === item.id) && 
+                    (<UpdateItem key={item.id} 
+                      itemId={item.id} 
+                      isAquired={item.isAquired} 
+                      handleItemUpdate={this.handleItemUpdate}
+                    />)}
+                </li>
+              )}
+
+            </ul>
           <br></br>
       </div>
     );

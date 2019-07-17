@@ -1,5 +1,4 @@
 require("dotenv").config();
-
 const passposrtConfig = require("./passport");
 const session = require("express-session");
 const logger = require("morgan");
@@ -10,8 +9,6 @@ module.exports = {
     
     init(app, express){
         app.use(logger('dev'));
-
-        
         app.use(bodyParser.urlencoded({ extended: true }));
         app.use(express.json());
         app.use(express.static(path.join(__dirname, 'client/build')));

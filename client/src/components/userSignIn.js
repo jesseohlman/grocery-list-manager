@@ -15,7 +15,6 @@ class UserSignIn extends Component{
         this.handleChange = this.handleChange.bind(this);
         this.handleSignIn = this.handleSignIn.bind(this);
 
-
     }
 
     componentDidMount(){
@@ -65,6 +64,7 @@ class UserSignIn extends Component{
                         <input className="input-small form-control" type="password" id="password" name="password" onChange={this.handleChange} placeholder="password"/>
                     </div>
                     <br></br>
+                    
                     <input className="btn btn-primary" type="submit" value="Submit" />
                 </form>
                 </div>

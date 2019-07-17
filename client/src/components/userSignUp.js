@@ -11,6 +11,7 @@ class UserSignUp extends Component{
         }
 
         this.handleSignUp = this.handleSignUp.bind(this);
+
     }
 
     componentDidMount(){
@@ -18,7 +19,7 @@ class UserSignUp extends Component{
         this.setState({message: null});
     }
 
-      handleSignUp(e){
+    handleSignUp(e){
         e.preventDefault();
 
         axios.post("/users/submit", {
@@ -27,7 +28,7 @@ class UserSignUp extends Component{
             password: this.password.value
         })
         .then((res) => {
-            if(res){
+            if(res.data.message){
                 this.setState({message: res.data.message});
             }
         })

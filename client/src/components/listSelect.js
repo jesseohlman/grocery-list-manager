@@ -13,30 +13,31 @@ class ListSelect extends Component {
         lists: [],
         message: null,
         updated: false,
-        update: null,
+        displayUpdate: null,
         displayList: null
     };
 
     this.handleListDelete = this.handleListDelete.bind(this);
     this.afterListComplete = this.afterListComplete.bind(this);
     this.handleListUpdate = this.handleListUpdate.bind(this);
-    this.displayUpdate = this.displayUpdate.bind(this);
+    this.toggleListUpdate = this.toggleListUpdate.bind(this);
+    this.toggleList = this.toggleList.bind(this);
     this.getLists = this.getLists.bind(this);
 
   }
   componentDidMount(){
     this.getLists();
     this.timer = setInterval(()=> this.getLists(), 20000);
-    //updates state every 20 seconds
+    //updates lists every 20 seconds
   }
 
   componentWillUnmount(){
     clearInterval(this.timer);
     this.timer = null;
+    //stops timer
   }
 
   getLists() {
-
     fetch("/lists/select", {credentials: "include"})
     .then(res => res.json())
     .then((lists) => {
@@ -46,10 +47,13 @@ class ListSelect extends Component {
         this.setState({lists: lists})
       }
     })
+    .catch((err) => {
+      console.log(err);
+    })
   }
 
   handleListDelete(e, listId){
-    e.persist();
+    e.persist(); //allows for function to be called asynchronusly
     
     axios.post(`/lists/${listId}/delete`, {
       listId: listId
@@ -59,19 +63,14 @@ class ListSelect extends Component {
         this.setState({message: res.data.message, lists: this.state.lists})
       }
       this.getLists();
-      //re-renders items with the one list removed
+      //re-renders lists with the one list removed
     })
     .catch((err) => {
       console.log(err);
     })
   }
 
-  afterListComplete(){
-    this.getLists
-  }
-
   handleListUpdate(list){
-
     axios.post(`/lists/${list.id}/update`, {
       title: list.title,
       store: list.store,
@@ -80,19 +79,32 @@ class ListSelect extends Component {
     .then((result) => {
       fetch("/lists/select", {credentials: "include"})
       .then(res => res.json())
-      .then(lists => this.setState({lists: lists, updated: true, update: null}))
+      .then(lists => this.setState({lists: lists, updated: true, displayUpdate: null}))
+      //updated == true will re-render page
+      //update == null
+    })
+    .catch((err) => {
+      console.log(err);
     })
   }
 
-  displayUpdate(listId){
-    if(listId === this.state.update){
-      this.setState({update: null})
+  afterListComplete(isCompleted){
+    this.getLists();
+    if(isCompleted){
+      this.setState({displayList: null});
+      //toggles list view off if list has been completed
+    }
+  }
+  
+  toggleListUpdate(listId){
+    if(listId === this.state.displayUpdate){
+      this.setState({displayUpdate: null})
     } else {
-      this.setState({update: listId});
+      this.setState({displayUpdate: listId});
     }
   }
 
-  displayList(listId){
+  toggleList(listId){
     if(listId === this.state.displayList){
       this.setState({displayList: null})
     } else {
@@ -108,18 +120,32 @@ class ListSelect extends Component {
             <ul>
                 {this.state.lists.map(list =>
                     <li key={list.id}>
-                      <Link to="/lists/select" onClick={() => this.displayList(list.id)}>Title: {list.title}<br></br><small>Store: {list.store}</small></Link>
+                      <Link to="/lists/select" onClick={() => this.toggleList(list.id)}>
+                        Title: {list.title}
+                        <br></br>
+                        <small>Store: {list.store}</small>
+                      </Link>
                       <br></br>
+
                       {list.isCompleted && (<div><small>list completed</small></div>)}
                       <button className="btn btn-danger btn-sm" onClick={(e) => this.handleListDelete(e, list.id)}>Delete</button>
-                      <button className="btn btn-warning btn-sm" onClick={() => this.displayUpdate(list.id)}>Update</button>
+                      <button className="btn btn-warning btn-sm" onClick={() => this.toggleListUpdate(list.id)}>Update</button>
 
-                              {(this.state.update === list.id) && (<ListUpdate listId={list.id} handleListUpdate={this.handleListUpdate}/>)}
+                      {(this.state.displayUpdate === list.id) && 
+                        (<ListUpdate 
+                          listId={list.id} 
+                          handleListUpdate={this.handleListUpdate}
+                        />)}
                           
-                              {(this.state.displayList === list.id) && (<ListView listId={list.id} listComplete={list.isCompleted} afterListComplete={this.afterListComplete}/>)}
+                      {(this.state.displayList === list.id) && 
+                        (<ListView 
+                          listId={list.id} 
+                          listComplete={list.isCompleted} 
+                          afterListComplete={this.afterListComplete}
+                        />)}
 
                     </li>
-                  )}
+                )}
             </ul>
       </div>
     );

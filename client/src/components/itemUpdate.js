@@ -21,14 +21,13 @@ class ItemUpdate extends Component {
   }
 
   handleChange(e){
-    this.setState({[e.target.id]: e.target.value, id: this.state.id})
-}
+    this.setState({[e.target.name]: e.target.value, id: this.state.id})
+  }
 
-  
   handleSubmit(e){
-        e.preventDefault();
-        this.props.handleItemUpdate( this.state);
-        e.target.reset();
+    e.preventDefault();
+    this.props.handleItemUpdate(this.state);
+    e.target.reset();
   }
 
 
@@ -40,11 +39,13 @@ class ItemUpdate extends Component {
               <small><label for="name-update">Name:</label></small>
               <input className="input-small form-control" id="name-update" type="text" name="name" onChange={this.handleChange} placeholder="update name"/>
             </div>
+
             <div className="form-group">
               <small><label for="count-update">Amount:</label></small>
               <input className="input-small form-control" id="count-update" type="text" name="count"  onChange={this.handleChange} placeholder="update amount"/>
             </div>
-              <input type="submit" className="btn btn-primary btn-sm" value="Submit" />
+
+            <input type="submit" className="btn btn-primary btn-sm" value="Submit" />
         </form>
       </div>
     )

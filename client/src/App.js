@@ -38,12 +38,7 @@ class App extends Component {
   handleSignOut(){
     axios.get("/users/signOut")
     .then((res) => {
-
-      fetch("/users", {credentials: "include"})
-      .then(res => res.json())
-      .then((user) => {
-        this.setState({user: user});
-      })
+      this.setState({user: {id: undefined}})
     })
     .catch((err) => {
       console.log(err);
@@ -52,6 +47,7 @@ class App extends Component {
 
   afterSignIn(user){
     this.setState({user: user});
+    //set current user
   }
 
 
@@ -62,7 +58,7 @@ class App extends Component {
       
         <Router>
           <div>
-          <header className="App-header">
+          <header>
             <h2 className="App-title">Grocery List Manager</h2>
 
               {currentUser ? (<ul className="list-inline">
@@ -84,14 +80,15 @@ class App extends Component {
               <Route path="/lists/select/" component={ListSelect} />
 
               <Route path="/users/new/" component={UserSignUp}/>
-              <Route path="/users/signIn/" render={(props) => <UserSignIn {...props} afterSignIn={this.afterSignIn} />}/>
+
+              <Route path="/users/signIn/" render={(props) => 
+                <UserSignIn {...props} afterSignIn={this.afterSignIn} />
+              }/>
             </body>
 
           </div>
         </Router>
-        
       </div>
-      
     );
   }
 }

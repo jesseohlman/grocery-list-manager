@@ -1,12 +1,10 @@
 const Item = require("../db/models").item;
 const List = require("../db/models").list;
 
-
 const Auth = require("../policies/policy");
 
 module.exports = {
     addItem(req, res, next){
-
         List.findOne({where: {id: req.params.listId}})
         .then((list) => {
 
@@ -26,6 +24,10 @@ module.exports = {
                 res.json({message: "You are not Authorized to do that"});
             }
         })
+        .catch((err) => {
+            console.log(err);
+            res.end();
+        })
     },
 
     deleteItem(req, res, next){
@@ -39,18 +41,17 @@ module.exports = {
                 .then((item) => {
                     res.json(item);
                 })
-                .catch((err) => {
-                    console.log(err);
-                })
             } else {
                 res.json({message:"You are not Authorized to do that"});
-
             }
+        })
+        .catch((err) => {
+            console.log(err);
+            res.end();
         })
     },
 
     complete(req, res, next){
-
         List.findOne({where: {id: req.params.listId}})
         .then((list) => {
 
@@ -61,20 +62,19 @@ module.exports = {
                 .then((item) => {
                     var change = false;
                     item.isAquired === false ? change = true : change = false;
-
+                    //change from true to false and vise versa
                     item.update({isAquired: change})
                     .then((item) => {
                         res.json(item);
                     })
-                    .catch((err) => {
-                        console.log(err);
-                    })
-                    
                 })
-            
             } else {
                 res.json({message:"You are not Authorized to do that"});
             }
+        })
+        .catch((err) => {
+            console.log(err);
+            res.end();
         })
     }
 }

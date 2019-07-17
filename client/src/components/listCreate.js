@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 
-
 const axios = require("axios");
 
 class List extends Component {
@@ -11,6 +10,7 @@ class List extends Component {
     };
 
     this.handleCreate = this.handleCreate.bind(this);
+
   }
 
   componentDidMount(){
@@ -25,7 +25,7 @@ class List extends Component {
       store: this.store.value
     })
     .then((res) => {
-      if(res.data){
+      if(res.data.message){
         this.setState({message: res.data.message});
       } else {
         this.setState({message: `List ${this.title.value} has been created`});
@@ -34,8 +34,8 @@ class List extends Component {
     .catch((err) => {
       console.log(err);
     })
-    e.target.reset();
 
+    e.target.reset();
   }
 
   render() {
@@ -44,19 +44,21 @@ class List extends Component {
         <h2>Create List</h2>
         <div>{this.state.message}</div>
         <ul>
-        <form onSubmit={this.handleCreate}>
-        <div className="from-group">
-            <label for="title">List Title:</label>
-            <input className="input-small form-control" id="title" type="text" name="title" ref={(title) => this.title = title} placeholder="title"/>
-        </div>
+          
+          <form onSubmit={this.handleCreate}>
+            <div className="from-group">
+                <label for="title">List Title:</label>
+                <input className="input-small form-control" id="title" type="text" name="title" ref={(title) => this.title = title} placeholder="title"/>
+            </div>
 
-        <div className="from-group">
-            <label for="store">Store Name:</label>
-            <input className="input-small form-control" type="text" name="store" ref={(store) => this.store = store} placeholder="store"/>
-        </div>
-        <br></br>
-        <input type="submit" className="btn btn-primary" value="Submit" />
-      </form>
+            <div className="from-group">
+                <label for="store">Store Name:</label>
+                <input className="input-small form-control" type="text" name="store" ref={(store) => this.store = store} placeholder="store"/>
+            </div>
+            <br></br>
+            
+            <input type="submit" className="btn btn-primary" value="Submit" />
+          </form>
 
         </ul>
       </div>
