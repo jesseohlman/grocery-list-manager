@@ -31,7 +31,7 @@ class UserSignUp extends Component{
             if(res.data.errors){
                 this.setState({message: res.data.errors[0].msg});
             }
-            else if(res.data.message){
+            if(res.data.message){
                 this.setState({message: res.data.message});
             } 
         })

@@ -159,7 +159,7 @@ class ListView extends Component {
                   <Item 
                     key={item.id}
                     afterItemAquire={() => this.afterItemAquire()}
-                    handleItemDelete={this.handleItemDelete}
+                    handleItemDelete={() => this.handleItemDelete()}
                     item={item}
                     listId={this.props.listId}
                   />
@@ -170,7 +170,7 @@ class ListView extends Component {
                     (<UpdateItem key={item.id} 
                       itemId={item.id} 
                       isAquired={item.isAquired} 
-                      handleItemUpdate={this.handleItemUpdate}
+                      handleItemUpdate={() => this.handleItemUpdate()}
                     />)}
                 </li>
               )}
