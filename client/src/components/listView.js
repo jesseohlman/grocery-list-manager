@@ -25,6 +25,7 @@ class ListView extends Component {
     this.toggleItemUpdate = this.toggleItemUpdate.bind(this);
     this.toggleItemAdd = this.toggleItemAdd.bind(this);
     this.getItems = this.getItems.bind(this);
+    this.afterItemAdd = this.afterItemAdd.bind(this);
 
   }
   componentDidMount(){
@@ -129,6 +130,10 @@ class ListView extends Component {
     this.handleItemAdd(item);
   }
 
+  afterItemAdd(){
+    this.getItems();
+  }
+
   render() {
     return (
       <div>
@@ -153,6 +158,7 @@ class ListView extends Component {
                 <li> 
                   <Item 
                     key={item.id}
+                    afterItemAdd={this.afterItemAdd}
                     handleItemDelete={this.handleItemDelete}
                     item={item}
                     listId={this.props.listId}

@@ -1,22 +1,12 @@
 const User = require("../db/models").user;
 const bcrypt = require('bcrypt');
-const { check, validationResult } = require('express-validator');
 
 
 const passport = require("passport");
 
 module.exports = {
     create(req, res, next){
-        [
-            check('email', 'not email').isEmail(),
-        check('password', 'password too short').isLength({min: 6})
-        ], (req, res, ) => {
-            const errors = validationResult(req);
-            
-            if(!errors.isEmpty()){
-                return res.json({ errors: errors.array() });
-            }
-         } //validation
+        
        
         User.findOne({where: {email: req.body.email}})
             .then((user) => {

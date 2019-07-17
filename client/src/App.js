@@ -39,7 +39,7 @@ class App extends Component {
     if (window.confirm('Are you sure you wish to sign out? All users currently signed in to this account will also be signed out!')){
     axios.get("/users/signOut")
     .then((res) => {
-      this.setState({user: {id: undefined}, message: "You've been signed out. Most functions will be unavliable until you sign back in!"})
+      this.setState({user: {id: undefined}, message: "You've been signed out.\nMost functions will be unavliable until you sign back in!"})
     })
     .catch((err) => {
       console.log(err);
