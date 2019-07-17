@@ -2,8 +2,7 @@
   "name": "client",
   "version": "0.1.0",
   "private": true,
-  "proxy": "http://localhost:5000",
-  "engines": {
+    "engines": {
     "npm": "6.4.1",
     "node": "10.14.2"
   },
