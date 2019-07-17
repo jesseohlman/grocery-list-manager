@@ -101,8 +101,9 @@ class ListView extends Component {
     .then((res) => {
       if(res.data.message){
         this.setState({message: res.data.message});
-      }
+      } else {
       this.getItems();
+      }
       //re-renders items with the one removed
     })
     .catch((err) => {

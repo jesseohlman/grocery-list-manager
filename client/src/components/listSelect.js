@@ -60,9 +60,10 @@ class ListSelect extends Component {
     })
     .then((res) => {
       if(res.data.message){
-        this.setState({message: res.data.message, lists: this.state.lists})
+        this.setState({message: res.data.message})
+      } else {
+        this.getLists();
       }
-      this.getLists();
       //re-renders lists with the one list removed
     })
     .catch((err) => {
@@ -79,7 +80,13 @@ class ListSelect extends Component {
     .then((result) => {
       fetch("/lists/select", {credentials: "include"})
       .then(res => res.json())
-      .then(lists => this.setState({lists: lists, updated: true, displayUpdate: null}))
+      .then((lists) => {
+        if(lists.message){
+          this.setState({message: lists.message})
+        } else {
+          this.setState({lists: lists, updated: true, displayUpdate: null})
+        }
+      })
       //updated == true will re-render page
       //update == null
     })
