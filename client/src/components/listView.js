@@ -25,7 +25,7 @@ class ListView extends Component {
     this.toggleItemUpdate = this.toggleItemUpdate.bind(this);
     this.toggleItemAdd = this.toggleItemAdd.bind(this);
     this.getItems = this.getItems.bind(this);
-    this.afterItemAdd = this.afterItemAdd.bind(this);
+    this.afterItemAquire = this.afterItemAquire.bind(this);
 
   }
   componentDidMount(){
@@ -103,7 +103,7 @@ class ListView extends Component {
       if(res.data.message){
         this.setState({message: res.data.message});
       } else {
-      this.getItems();
+        this.getItems();
       }
       //re-renders items with the one removed
     })
@@ -130,7 +130,7 @@ class ListView extends Component {
     this.handleItemAdd(item);
   }
 
-  afterItemAdd(){
+  afterItemAquire(){
     this.getItems();
   }
 
@@ -158,11 +158,10 @@ class ListView extends Component {
                 <li> 
                   <Item 
                     key={item.id}
-                    afterItemAdd={this.afterItemAdd}
+                    afterItemAquire={() => this.afterItemAquire()}
                     handleItemDelete={this.handleItemDelete}
                     item={item}
                     listId={this.props.listId}
-                    afterItemComplete={this.afterItemComplete}
                   />
                   <button className="btn btn-danger btn-sm" onClick={() => this.handleItemDelete(item.id)}>Remove</button>
                   <button className="btn btn-warning btn-sm" onClick={() => this.toggleItemUpdate(item.id)}>Update</button>

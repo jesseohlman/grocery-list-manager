@@ -19,7 +19,7 @@ class Item extends Component {
     })
     .then((res) => {
       //changes completed to true if false and vise versa
-      this.props.afterItemAdd();
+      this.props.afterItemAquire();
     })
     .catch((err) => {
       console.log(err);
