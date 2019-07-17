@@ -18,7 +18,9 @@ class Item extends Component {
     this.setState({item: this.props.item, isCompleted: this.props.item.isAquired});
   }
   
-  handleComplete(itemId){
+  handleComplete(e, itemId){
+    e.persist();
+
     axios.post(`/lists/${this.props.listId}/completeItem`, {
       itemId: itemId,
       listId: this.props.listId
@@ -48,7 +50,7 @@ class Item extends Component {
         <div className="complete-box">
           <label for="complete">Item Aquired: </label>
           {this.state.isCompleted ? 
-          (<input type="checkbox" name="complete" onChange={() => this.handleComplete(this.state.item.id)} checked/>) : 
+          (<input type="checkbox" name="complete" onChange={(e) => this.handleComplete(e, this.state.item.id)} checked/>) : 
           (<input type="checkbox" name="complete" onChange={(e) => this.handleComplete(e, this.state.item.id)}/>)} 
         </div>     
       </div>
