@@ -20,4 +20,19 @@
   margin: 0px 0px 0px 15px;
 }
 
-.App-title{ color: #152b4d; font-family: 'Trocchi', serif; font-weight: normal; line-height: 48px; margin: 0; }
+.nav-list{
+  border-bottom: 2px solid grey;
+  background-color: #edeff2;
+  width: 320px
+}
+
+.App-title{ 
+  color: #152b4d;  
+  font-weight: normal; 
+  line-height: 48px;
+  margin: 0; 
+}
+
+.items-title{
+  margin-left: 38px;
+}

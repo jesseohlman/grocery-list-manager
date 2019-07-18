@@ -64,12 +64,12 @@ class App extends Component {
           <header>
             <h2 className="App-title">Grocery List Manager</h2>
 
-              {currentUser ? (<ul className="list-inline">
+              {currentUser ? (<ul className="nav-list list-inline">
                   <li className="nav-piece list-inline-item"><Link to="/lists/new/">New List</Link></li>
                   <li className="nav-piece list-inline-item"><Link to="/lists/select/">Select List</Link></li>
                   <li className="nav-piece list-inline-item"><Link to="/about/">About</Link></li>
                   <li className="nav-piece list-inline-item"><Link to="/" onClick={this.handleSignOut}>Sign Out</Link></li>
-                </ul>) : (<ul className="list-inline">
+                </ul>) : (<ul className="nav-list list-inline">
                   <li className="nav-piece list-inline-item"><Link to="/users/new/">Create Account</Link></li>
                   <li className="nav-piece list-inline-item"><Link to="/users/signIn/">Sign In</Link></li>
                   <li className="nav-piece list-inline-item"><Link to="/about/">About</Link></li>

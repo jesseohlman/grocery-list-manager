@@ -153,7 +153,7 @@ class ListView extends Component {
           <br></br>
           <br></br>
 
-          <h4><strong><u>Items:</u></strong></h4>
+          <h4 className="items-title"><strong><u>Items:</u></strong></h4>
           <div>{this.state.message}</div>
 
             <ul>
