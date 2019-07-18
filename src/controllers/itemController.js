@@ -18,7 +18,7 @@ module.exports = {
                     isAquired: req.body.isAquired || false
                 })
                 .then((item) => {
-                    res.json(item);
+                    res.end();
                 })
             } else {
                 res.json({message: "You are not Authorized to do that"});
@@ -39,7 +39,7 @@ module.exports = {
             if(auth._isOwner()){
                 Item.destroy({where: {id: req.body.itemId, listId: req.params.listId}})
                 .then((item) => {
-                    res.json(item);
+                    res.end();
                 })
             } else {
                 res.json({message:"You are not Authorized to do that"});
@@ -65,7 +65,7 @@ module.exports = {
                     //change from true to false and vise versa
                     item.update({isAquired: change})
                     .then((item) => {
-                        res.json(item);
+                        res.end();
                     })
                 })
             } else {

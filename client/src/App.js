@@ -36,14 +36,14 @@ class App extends Component {
   }
 
   handleSignOut(){
-    if (window.confirm('Are you sure you wish to sign out? All users currently signed in to this account will also be signed out!')){
-    axios.get("/users/signOut")
-    .then((res) => {
-      this.setState({user: {id: undefined}, message: "You've been signed out.\nMost functions will be unavliable until you sign back in!"})
-    })
-    .catch((err) => {
-      console.log(err);
-    })
+    if (window.confirm('Are you sure you wish to sign out?')){
+      axios.get("/users/signOut")
+      .then((res) => {
+        this.setState({user: {id: undefined}, message: "You've been signed out.\nMost functions will be unavliable until you sign back in!"})
+      })
+      .catch((err) => {
+        console.log(err);
+      })
   }
 
   }

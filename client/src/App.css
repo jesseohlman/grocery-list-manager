@@ -19,3 +19,5 @@
 .about{
   margin: 0px 0px 0px 15px;
 }
+
+.App-title{ color: #152b4d; font-family: 'Trocchi', serif; font-weight: normal; line-height: 48px; margin: 0; }

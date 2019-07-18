@@ -53,7 +53,7 @@ class ListSelect extends Component {
   }
 
   handleListDelete(e, listId){
-    e.persist(); //allows for function to be called asynchronusly
+    e.persist(); //allows for function called in an asynchronus way
     
     axios.post(`/lists/${listId}/delete`, {
       listId: listId

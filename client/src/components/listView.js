@@ -55,6 +55,27 @@ class ListView extends Component {
     })
   }
 
+
+  handleListComplete(e, listId){
+    e.persist(); //allows for asynch
+
+    axios.post(`/lists/${this.props.listId}/complete`, {
+      listId: listId
+    })
+    .then((res) => {
+      if(res.data.message){
+        this.setState({message: res.data.message})
+      }
+      //changes completed from false to true and vise versa
+      var change = this.state.isCompleted ? false : true;
+      this.setState({isCompleted: change})
+
+      this.props.afterListComplete(this.state.isCompleted);
+      //re-renders lists
+    })
+  }
+
+  //item functions
   handleItemAdd(item){
     axios.post(`/lists/${this.props.listId}/addItem`, {
       name: item.name,
@@ -74,25 +95,6 @@ class ListView extends Component {
       console.log(err);
     })
 
-  }
-
-  handleListComplete(e, listId){
-    e.persist(); //allows for asynch
-
-    axios.post(`/lists/${this.props.listId}/complete`, {
-      listId: listId
-    })
-    .then((res) => {
-      if(res.data.message){
-        this.setState({message: res.data.message})
-      }
-      //changes completed from false to true and vise versa
-      var change = this.state.isCompleted ? false : true;
-      this.setState({isCompleted: change})
-
-      this.props.afterListComplete(this.state.isCompleted);
-      //re-renders lists
-    })
   }
 
   handleItemDelete(itemId){
@@ -159,7 +161,6 @@ class ListView extends Component {
               {this.state.items.map((item, index) =>
                 <li> 
                   <div id={item.id}>
-                  {console.log(`item.id: ${item.id}`)}
                     <Item 
                       key={item.id}
                       afterItemAquire={() => this.afterItemAquire()}

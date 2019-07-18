@@ -24,7 +24,6 @@ class ItemUpdate extends Component {
 
   handleSubmit(e){
     e.preventDefault();
-    console.log({name: this.state.name, count: this.state.count, id: this.props.itemId, isAquired: this.props.isAquired});
     this.props.handleItemUpdate({name: this.state.name, count: this.state.count, id: this.props.itemId, isAquired: this.props.isAquired});
     e.target.reset();
   }

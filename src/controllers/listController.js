@@ -84,7 +84,7 @@ module.exports = {
 
                 list.update({isCompleted: change})
                 .then((list) => {
-                    res.json(list);
+                    res.end();
                 })
             } else {
                 res.json({message: "You are not authorized to do that."})
@@ -106,7 +106,7 @@ module.exports = {
             if(auth._isOwner()){
                 list.destroy({})
                 .then((list) => {
-                    res.json(list);
+                    res.end();
                 })
             } else {
                 res.json({message: "You are not authorized to do that."});
@@ -131,7 +131,7 @@ module.exports = {
                 .then((list) => {
                     List.findOne({where: {id: req.body.id}})
                     .then((list) => {
-                        res.json(list)
+                        res.end();
                     })
                 })
             } else {
