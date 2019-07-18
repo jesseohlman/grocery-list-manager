@@ -104,8 +104,8 @@ class ListView extends Component {
         this.setState({message: res.data.message});
       } else {
         this.getItems();
+        //re-renders items with the one removed
       }
-      //re-renders items with the one removed
     })
     .catch((err) => {
       console.log(err);
@@ -127,6 +127,8 @@ class ListView extends Component {
 
   handleItemUpdate(item){
     this.handleItemDelete(item.id);
+    console.log(`item deleted`);
+    //^console.log here prevents error where only part of the item was deleted
     this.handleItemAdd(item);
   }
 
@@ -156,13 +158,16 @@ class ListView extends Component {
               
               {this.state.items.map((item, index) =>
                 <li> 
-                  <Item 
-                    key={item.id}
-                    afterItemAquire={() => this.afterItemAquire()}
-                    handleItemDelete={() => this.handleItemDelete()}
-                    item={item}
-                    listId={this.props.listId}
-                  />
+                  <div id={item.id}>
+                  {console.log(`item.id: ${item.id}`)}
+                    <Item 
+                      key={item.id}
+                      afterItemAquire={() => this.afterItemAquire()}
+                      handleItemDelete={this.handleItemDelete}
+                      item={item}
+                      listId={this.props.listId}
+                    />
+                  </div>
                   <button className="btn btn-danger btn-sm" onClick={() => this.handleItemDelete(item.id)}>Remove</button>
                   <button className="btn btn-warning btn-sm" onClick={() => this.toggleItemUpdate(item.id)}>Update</button>
 
@@ -170,7 +175,7 @@ class ListView extends Component {
                     (<UpdateItem key={item.id} 
                       itemId={item.id} 
                       isAquired={item.isAquired} 
-                      handleItemUpdate={() => this.handleItemUpdate()}
+                      handleItemUpdate={this.handleItemUpdate}
                     />)}
                 </li>
               )}

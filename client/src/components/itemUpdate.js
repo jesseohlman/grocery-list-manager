@@ -6,9 +6,7 @@ class ItemUpdate extends Component {
     super(props);
     this.state = {
         name: null,
-        count: null,
-        id: this.props.itemId,
-        isAquired: this.props.isAquired
+        count: null
     };
 
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -21,12 +19,13 @@ class ItemUpdate extends Component {
   }
 
   handleChange(e){
-    this.setState({[e.target.name]: e.target.value, id: this.state.id})
+    this.setState({[e.target.name]: e.target.value})
   }
 
   handleSubmit(e){
     e.preventDefault();
-    this.props.handleItemUpdate(this.state);
+    console.log({name: this.state.name, count: this.state.count, id: this.props.itemId, isAquired: this.props.isAquired});
+    this.props.handleItemUpdate({name: this.state.name, count: this.state.count, id: this.props.itemId, isAquired: this.props.isAquired});
     e.target.reset();
   }
 
