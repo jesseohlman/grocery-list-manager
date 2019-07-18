@@ -50,7 +50,6 @@ class UserSignIn extends Component{
     render(){
         return(
             <div className="SignInForm">
-                <div>
                 <h2>Sign In</h2>
                 <div>{this.state.message}</div>
                 <form onSubmit={this.handleSignIn}>
@@ -67,7 +66,6 @@ class UserSignIn extends Component{
                     
                     <input className="btn btn-primary" type="submit" value="Submit" />
                 </form>
-                </div>
             </div>
         )
     }

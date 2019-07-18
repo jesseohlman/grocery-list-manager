@@ -2,11 +2,11 @@ import React, { Component } from 'react';
 import { Route, Link, BrowserRouter as Router } from 'react-router-dom';
 import './App.css';
 
-import ListCreate from './components/listCreate';
-import ListSelect from './components/listSelect';
+import ListCreate from './components/lists/listCreate';
+import ListSelect from './components/lists/listSelect';
 
-import UserSignUp from './components/userSignUp';
-import UserSignIn from './components/userSignIn';
+import UserSignUp from './components/users/userSignUp';
+import UserSignIn from './components/users/userSignIn';
 
 import About from "./components/about";
 

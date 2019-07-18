@@ -43,7 +43,7 @@ class UserSignUp extends Component{
 
     render(){
         return(
-            <div className="SignInForm">
+            <div className="create-form">
                 <h2>Create your account</h2>
                 <div id="err">{this.state.message}</div>
                 <form onSubmit={this.handleSignUp}>

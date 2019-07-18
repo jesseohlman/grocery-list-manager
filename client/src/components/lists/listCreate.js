@@ -40,10 +40,9 @@ class List extends Component {
 
   render() {
     return (
-      <div>
+      <div className="create-form">
         <h2>Create List</h2>
         <div>{this.state.message}</div>
-        <ul>
           
           <form onSubmit={this.handleCreate}>
             <div className="from-group">
@@ -60,7 +59,6 @@ class List extends Component {
             <input type="submit" className="btn btn-primary" value="Submit" />
           </form>
 
-        </ul>
       </div>
     );
   }

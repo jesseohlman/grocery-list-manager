@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 
-import Item from "./item";
-import UpdateItem from "./itemUpdate";
-import AddItem from "./addItem";
+import Item from "../items/item";
+import UpdateItem from "../items/itemUpdate";
+import AddItem from "../items/addItem";
 
 const axios = require("axios");
 
