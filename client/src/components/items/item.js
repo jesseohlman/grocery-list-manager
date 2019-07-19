@@ -11,6 +11,8 @@ class Item extends Component {
   }
   
   handleComplete(e, itemId){
+    //sometimes may be a little buggy
+    //switching to web socketing instead of polling would fix it I believe
     e.persist();
 
     axios.post(`/lists/${this.props.listId}/completeItem`, {
@@ -39,7 +41,7 @@ class Item extends Component {
         </small>
 
         <div className="complete-box">
-          <label for="complete">Item Aquired: </label>
+          <label for="complete">Item Acquired: </label>
           {this.props.item.isAquired ? 
           (<input type="checkbox" name="complete" onChange={(e) => this.handleComplete(e, this.props.item.id)} checked/>) : 
           (<input type="checkbox" name="complete" onChange={(e) => this.handleComplete(e, this.props.item.id)}/>)} 
