@@ -30,14 +30,8 @@ class ListView extends Component {
   }
   componentDidMount(){
     this.getItems();
-    this.aquireBox =  this.state.items.map((item)=> { return <div><label for="complete">Item Aquired: </label>    
-      {item.isAquired ? 
-      (<input id={item.id} type="checkbox" name="complete" onChange={() => this.handleItemComplete(item.id)} checked/>) : 
-      (<input id={item.id} type="checkbox" name="complete" onChange={() => this.handleItemComplete(item.id)}/>)} 
-      </div>
-      });
-
-      document.getElementById()
+    
+    
     this.timer = setInterval(()=> this.getItems(), 10000);
     //updates state every 10 seconds
   }
@@ -56,7 +50,11 @@ class ListView extends Component {
         this.setState({items: items, isCompleted: this.props.listComplete, message: "This list dosen't contain any items"});
       } else {
         this.setState({items: items, isCompleted: this.props.listComplete, message: null})
-      }
+
+        items.forEach((item) => {
+          document.getElementById(item.id).checked = item.isAquired;
+      });
+    }
     })
     .catch((err) => {
       console.log(err);
@@ -148,8 +146,8 @@ class ListView extends Component {
       listId: this.props.listId
     })
     .then((res) => {
-      document.getElementById(itemId).checked = res.data.isAquired;
-      console.log("updated");
+      this.getItems();
+      //document.getElementById(itemId).checked = res.data.isAquired;
     })
     .catch((err) => {
       console.log(err);
@@ -190,8 +188,9 @@ class ListView extends Component {
                       </small>
                     </div>
 
-                    <div className={item.id}>
-                     
+                    <div>
+                      <label for="item-acquire">Acquired: </label>
+                      <input type="checkbox" name="item-acquire" id={item.id} onChange={() => this.handleItemComplete(item.id)}/>
                     </div>     
 
                     <button className="btn btn-danger btn-sm" onClick={() => this.handleItemDelete(item.id)}>Remove</button>
