@@ -10,7 +10,6 @@ class ListView extends Component {
     super(props);
     this.state = {
         items: [],
-        starterItems: [],
         isCompleted: false,
         message: null,
         displayItemUpdate: null,
@@ -30,19 +29,15 @@ class ListView extends Component {
 
   }
   componentDidMount(){
-    fetch(`/lists/${this.props.listId}/view`, {credentials: "include"})
-    .then(res => res.json())
-    .then((items) => {
-      if(items.length <= 0){
-        this.setState({items: items, isCompleted: this.props.listComplete, message: "This list dosen't contain any items"});
-      } else {
-        this.setState({starterItems: items, items: items, isCompleted: this.props.listComplete, message: null})
-      }
-    })
-    .catch((err) => {
-      console.log(err);
-    })
+    this.getItems();
+    this.aquireBox =  this.state.items.map((item)=> { return <div><label for="complete">Item Aquired: </label>    
+      {item.isAquired ? 
+      (<input id={item.id} type="checkbox" name="complete" onChange={() => this.handleItemComplete(item.id)} checked/>) : 
+      (<input id={item.id} type="checkbox" name="complete" onChange={() => this.handleItemComplete(item.id)}/>)} 
+      </div>
+      });
 
+      document.getElementById()
     this.timer = setInterval(()=> this.getItems(), 10000);
     //updates state every 10 seconds
   }
@@ -195,11 +190,8 @@ class ListView extends Component {
                       </small>
                     </div>
 
-                    <div className="complete-box">
-                      <label for="complete">Item Aquired: </label>
-                      {this.state.starterItems[index].isAquired ? 
-                      (<input id={item.id} type="checkbox" name="complete" onChange={() => this.handleItemComplete(item.id)} checked/>) : 
-                      (<input id={item.id} type="checkbox" name="complete" onChange={() => this.handleItemComplete(item.id)}/>)} 
+                    <div className={item.id}>
+                     
                     </div>     
 
                     <button className="btn btn-danger btn-sm" onClick={() => this.handleItemDelete(item.id)}>Remove</button>
