@@ -52,7 +52,7 @@ module.exports = {
     },
 
     complete(req, res, next){
-        List.findOne({where: {id: req.params.listId}})
+        List.findOne({where: {id: req.body.listId}})
         .then((list) => {
 
             var auth = new Auth(req.user, list);
@@ -60,8 +60,7 @@ module.exports = {
             if(auth._isOwner()){
                 Item.findOne({where: {id: req.body.itemId, listId: req.body.listId}})
                 .then((item) => {
-                    var change = false;
-                    item.isAquired === false ? change = true : change = false;
+                    var change = item.isAquired === false ? true : false;
                     //change from true to false and vise versa
                     item.update({isAquired: change})
                     .then((item) => {

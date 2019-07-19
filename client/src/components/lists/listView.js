@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 
-import Item from "../items/item";
 import UpdateItem from "../items/itemUpdate";
 import AddItem from "../items/addItem";
 
@@ -25,7 +24,8 @@ class ListView extends Component {
     this.toggleItemUpdate = this.toggleItemUpdate.bind(this);
     this.toggleItemAdd = this.toggleItemAdd.bind(this);
     this.getItems = this.getItems.bind(this);
-    this.afterItemAquire = this.afterItemAquire.bind(this);
+    this.handleItemComplete = this.handleItemComplete.bind(this);
+
 
   }
   componentDidMount(){
@@ -75,7 +75,6 @@ class ListView extends Component {
     })
   }
 
-  //item functions
   handleItemAdd(item){
     axios.post(`/lists/${this.props.listId}/addItem`, {
       name: item.name,
@@ -134,8 +133,18 @@ class ListView extends Component {
     this.handleItemAdd(item);
   }
 
-  afterItemAquire(){
-    this.getItems();
+  handleItemComplete(e, itemId){
+
+    axios.post(`/lists/${this.props.listId}/completeItem`, {
+      itemId: itemId,
+      listId: this.props.listId
+    })
+    .then((res) => {
+      this.getItems();
+    })
+    .catch((err) => {
+      console.log(err);
+    })
   }
 
   render() {
@@ -160,18 +169,27 @@ class ListView extends Component {
               
               {this.state.items.map((item, index) =>
                 <li> 
-                  <div id={item.id}>
-                    <Item 
-                      key={item.id}
-                      afterItemAquire={() => this.afterItemAquire()}
-                      handleItemDelete={this.handleItemDelete}
-                      item={item}
-                      listId={this.props.listId}
-                    />
-                  </div>
-                  <button className="btn btn-danger btn-sm" onClick={() => this.handleItemDelete(item.id)}>Remove</button>
-                  <button className="btn btn-warning btn-sm" onClick={() => this.toggleItemUpdate(item.id)}>Update</button>
+                  <div>
 
+                    <div className="item-display">
+                      <div className="name-display">
+                          <strong>Name:</strong> {item.name}
+                      </div>
+                      <small className="amount-display">
+                        <strong>Amount:</strong> {item.count}
+                      </small>
+                    </div>
+
+                    <div className="complete-box">
+                      <label for="complete">Item Acquired: </label>
+                      {item.isAquired ? 
+                      (<input type="checkbox" name="complete" onChange={(e) => this.handleItemComplete(e, item.id)} checked/>) : 
+                      (<input type="checkbox" name="complete" onChange={(e) => this.handleItemComplete(e, item.id)}/>)} 
+                    </div>    
+
+                    <button className="btn btn-danger btn-sm" onClick={() => this.handleItemDelete(item.id)}>Remove</button>
+                    <button className="btn btn-warning btn-sm" onClick={() => this.toggleItemUpdate(item.id)}>Update</button>
+                  </div>
                   {(this.state.displayItemUpdate === item.id) && 
                     (<UpdateItem key={item.id} 
                       itemId={item.id} 
