@@ -10,6 +10,7 @@ class ListView extends Component {
     super(props);
     this.state = {
         items: [],
+        starterItems: [],
         isCompleted: false,
         message: null,
         displayItemUpdate: null,
@@ -29,7 +30,19 @@ class ListView extends Component {
 
   }
   componentDidMount(){
-    this.getItems();
+    fetch(`/lists/${this.props.listId}/view`, {credentials: "include"})
+    .then(res => res.json())
+    .then((items) => {
+      if(items.length <= 0){
+        this.setState({items: items, isCompleted: this.props.listComplete, message: "This list dosen't contain any items"});
+      } else {
+        this.setState({starterItems: items, items: items, isCompleted: this.props.listComplete, message: null})
+      }
+    })
+    .catch((err) => {
+      console.log(err);
+    })
+
     this.timer = setInterval(()=> this.getItems(), 10000);
     //updates state every 10 seconds
   }
@@ -141,6 +154,7 @@ class ListView extends Component {
     })
     .then((res) => {
       document.getElementById(itemId).checked = res.data.isAquired;
+      console.log("updated");
     })
     .catch((err) => {
       console.log(err);
@@ -183,7 +197,7 @@ class ListView extends Component {
 
                     <div className="complete-box">
                       <label for="complete">Item Aquired: </label>
-                      {item.isAquired ? 
+                      {this.state.starterItems[index].isAquired ? 
                       (<input id={item.id} type="checkbox" name="complete" onChange={() => this.handleItemComplete(item.id)} checked/>) : 
                       (<input id={item.id} type="checkbox" name="complete" onChange={() => this.handleItemComplete(item.id)}/>)} 
                     </div>     
