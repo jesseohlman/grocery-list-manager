@@ -140,7 +140,6 @@ class ListView extends Component {
       listId: this.props.listId
     })
     .then((res) => {
-      this.getItems();
       document.getElementById(itemId).checked = res.data.isAquired;
     })
     .catch((err) => {
