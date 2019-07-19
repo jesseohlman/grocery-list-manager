@@ -64,7 +64,8 @@ module.exports = {
                     //change from true to false and vise versa
                     item.update({isAquired: change})
                     .then((item) => {
-                        res.end();
+                        console.log(change);
+                        res.json({isAquired: change});
                     })
                 })
             } else {

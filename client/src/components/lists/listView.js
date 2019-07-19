@@ -133,7 +133,7 @@ class ListView extends Component {
     this.handleItemAdd(item);
   }
 
-  handleItemComplete(e, itemId){
+  handleItemComplete(itemId){
 
     axios.post(`/lists/${this.props.listId}/completeItem`, {
       itemId: itemId,
@@ -141,11 +141,13 @@ class ListView extends Component {
     })
     .then((res) => {
       this.getItems();
+      document.getElementById(itemId).checked = res.data.isAquired;
     })
     .catch((err) => {
       console.log(err);
     })
   }
+
 
   render() {
     return (
@@ -181,11 +183,11 @@ class ListView extends Component {
                     </div>
 
                     <div className="complete-box">
-                      <label for="complete">Item Acquired: </label>
+                      <label for="complete">Item Aquired: </label>
                       {item.isAquired ? 
-                      (<input type="checkbox" name="complete" onChange={(e) => this.handleItemComplete(e, item.id)} checked/>) : 
-                      (<input type="checkbox" name="complete" onChange={(e) => this.handleItemComplete(e, item.id)}/>)} 
-                    </div>    
+                      (<input id={item.id} type="checkbox" name="complete" onChange={() => this.handleItemComplete(item.id)} checked/>) : 
+                      (<input id={item.id} type="checkbox" name="complete" onChange={() => this.handleItemComplete(item.id)}/>)} 
+                    </div>     
 
                     <button className="btn btn-danger btn-sm" onClick={() => this.handleItemDelete(item.id)}>Remove</button>
                     <button className="btn btn-warning btn-sm" onClick={() => this.toggleItemUpdate(item.id)}>Update</button>
