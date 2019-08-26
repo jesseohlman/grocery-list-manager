@@ -6,19 +6,34 @@
   .list-view li:hover {
     color: black; }
 
+.list-view-default, .list-select li:nth-child(even) .list-view, .list-select li:nth-child(odd) .list-view {
+  padding-left: 0;
+  list-style: none;
+  border: 1px dashed silver; }
+  .list-view-default li, .list-select li:nth-child(even) .list-view li, .list-select li:nth-child(odd) .list-view li {
+    color: black; }
+  .list-view-default li:hover, .list-select li:nth-child(even) .list-view li:hover, .list-select li:nth-child(odd) .list-view li:hover {
+    color: black; }
+
 .list-select {
   padding-left: 0;
   list-style: none; }
   .list-select li:nth-child(even) {
     background: #f3f3f3; }
+    .list-select li:nth-child(even) .list-view li {
+      background: white; }
+  .list-select li:nth-child(odd) {
+    background: white; }
+    .list-select li:nth-child(odd) .list-view li {
+      background: #f3f3f3; }
   .list-select li {
     list-style-position: inside;
     border-bottom: 1px dashed silver;
     padding: 15px;
     list-style-type: none;
     margin: 0px; }
-    .list-select li .list-view {
+    .list-select li .list-link {
       text-decoration: none;
       color: black; }
-    .list-select li .list-view:hover {
+    .list-select li .list-link:hover {
       color: blue; }

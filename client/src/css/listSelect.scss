@@ -3,12 +3,43 @@
 $grey-scheme: grey;
 $text-color: black;
 
+.list-view-default{
+    padding-left: 0;
+    list-style: none;
+    border: 1px dashed $grey-scheme * 1.5;
+
+    li{
+        color: black;
+    }
+    li:hover{
+        color: black;
+    }
+}
+
 .list-select{
     padding-left: 0;
     list-style: none;
 
     li:nth-child(even){
         background: $grey-scheme * 1.9;
+        .list-view{
+            @extend .list-view-default;
+
+            li{
+                background: white;
+            }
+        }
+    }
+
+    li:nth-child(odd){
+        background: white;
+        .list-view{
+            @extend .list-view-default;
+
+            li{
+                background: $grey-scheme * 1.9;
+            }
+        }
     }
     li{
         list-style-position: inside;
@@ -17,12 +48,16 @@ $text-color: black;
         list-style-type: none;
         margin: 0px;
     
-        .list-view{
+        .list-link{
             text-decoration: none;
             color: $text-color;
         }
-        .list-view:hover{
+        .list-link:hover{
             color: blue;
         }
+
+
+
+
     }
 }

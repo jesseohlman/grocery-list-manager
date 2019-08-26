@@ -129,7 +129,7 @@ class ListSelect extends Component {
             <ul className="list-select">
                 {this.state.lists.map(list =>
                     <li key={list.id}>
-                      <Link className="list-view" to="/lists/select" onClick={() => this.toggleList(list.id)}>
+                      <Link className="list-link" to="/lists/select" onClick={() => this.toggleList(list.id)}>
                         Title: {list.title}
                         <br></br>
                         <small>Store: {list.store}</small>
@@ -148,6 +148,7 @@ class ListSelect extends Component {
                           
                       {(this.state.displayList === list.id) && 
                         (<ListView 
+                          listTitle={list.title}
                           listId={list.id} 
                           listComplete={list.isCompleted} 
                           afterListComplete={this.afterListComplete}

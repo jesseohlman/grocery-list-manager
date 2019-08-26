@@ -170,7 +170,7 @@ class ListView extends Component {
           <br></br>
           <br></br>
 
-          <h4 className="items-title"><strong><u>Items:</u></strong></h4>
+          <h4 className="items-title"><strong><u>{this.props.listTitle}:</u></strong></h4>
           <div>{this.state.message}</div>
 
             <ul className="list-view">
@@ -181,7 +181,7 @@ class ListView extends Component {
 
                     <div className="item-display">
                       <div className="name-display">
-                          <strong>Name:</strong> {item.name}
+                          <strong>Item:</strong> {item.name}
                       </div>
                       <small className="amount-display">
                         <strong>Amount:</strong> {item.count}
