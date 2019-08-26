@@ -173,7 +173,7 @@ class ListView extends Component {
           <h4 className="items-title"><strong><u>Items:</u></strong></h4>
           <div>{this.state.message}</div>
 
-            <ul>
+            <ul className="list-view">
               
               {this.state.items.map((item, index) =>
                 <li> 

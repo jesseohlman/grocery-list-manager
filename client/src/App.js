@@ -63,17 +63,20 @@ class App extends Component {
           <div>
           <header>
             <h2 className="App-title">Grocery List Manager</h2>
+              
+              <nav>
+                {currentUser ? (<ul>
+                    <li><Link className="link" to="/lists/new/">New List</Link></li>
+                    <li><Link className="link" to="/lists/select/">Select List</Link></li>
+                    <li><Link className="link" to="/about/">About</Link></li>
+                    <li><Link className="link" to="/" onClick={this.handleSignOut}>Sign Out</Link></li>
+                  </ul>) : (<ul>
+                    <li><Link className="link" to="/users/new/">Create Account</Link></li>
+                    <li><Link className="link" to="/users/signIn/">Sign In</Link></li>
+                    <li><Link className="link" to="/about/">About</Link></li>
+                  </ul>)}
+                </nav>
 
-              {currentUser ? (<ul>
-                  <li className="link"><Link to="/lists/new/">New List</Link></li>
-                  <li className="link"><Link to="/lists/select/">Select List</Link></li>
-                  <li className="link"><Link to="/about/">About</Link></li>
-                  <li className="link"><Link to="/" onClick={this.handleSignOut}>Sign Out</Link></li>
-                </ul>) : (<ul>
-                  <li className="link"><Link to="/users/new/">Create Account</Link></li>
-                  <li className="link"><Link to="/users/signIn/">Sign In</Link></li>
-                  <li className="link"><Link to="/about/">About</Link></li>
-                </ul>)}
             </header>
 
             <body>

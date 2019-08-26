@@ -1,3 +1,11 @@
+.list-view {
+  padding-left: 0;
+  list-style: none; }
+  .list-view li {
+    color: black; }
+  .list-view li:hover {
+    color: black; }
+
 .list-select {
   padding-left: 0;
   list-style: none; }

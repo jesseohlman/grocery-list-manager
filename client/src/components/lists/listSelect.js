@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import {Link, Redirect} from 'react-router-dom';
 
+import "../../css/listSelect.css";
+
 import ListView from "./listView";
 import ListUpdate from "./listUpdate";
 
@@ -124,10 +126,10 @@ class ListSelect extends Component {
       <div>
         <div>{this.state.message}</div>
         <div>{(this.state.updated) && <Redirect to="/lists/select"></Redirect>}</div>
-            <ul>
+            <ul className="list-select">
                 {this.state.lists.map(list =>
                     <li key={list.id}>
-                      <Link to="/lists/select" onClick={() => this.toggleList(list.id)}>
+                      <Link className="list-view" to="/lists/select" onClick={() => this.toggleList(list.id)}>
                         Title: {list.title}
                         <br></br>
                         <small>Store: {list.store}</small>

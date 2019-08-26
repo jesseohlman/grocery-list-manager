@@ -1,8 +1,7 @@
 
   
-$text-color: white;
-$title-color: orange;
 $bg-color: rgb(75, 70, 70);
+$text-color: white;
 
 
 nav{
@@ -27,7 +26,6 @@ nav{
 
      a:hover{
          background-color: $bg-color * 1.7;
-         color: $text-color;
      }
 }
 
@@ -37,15 +35,10 @@ nav{
     width: 100%;
   }
   
-  .input-small{
-    width: 75%;
+.input-small{    
+     width: 75%;
   }
   
-  .nav-piece{
-    padding: 0px 0px 0px 0px;
-    margin: 0px 10px 0px 10px
-  }
-  
-  .SignInForm{
+.SignInForm{
     margin: 0px 0px 0px 15px;
   }
