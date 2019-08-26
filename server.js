@@ -1,18 +1,37 @@
 const express = require('express');
+const http = require("http");
 
 const app = require("./app");
 
-/*app.get('/api/customers', (req, res) => {
-  const customers = [
-    {id: 1, firstName: 'John', lastName: 'Doe'},
-    {id: 2, firstName: 'Brad', lastName: 'Traversy'},
-    {id: 3, firstName: 'Mary', lastName: 'Swanson'},
-  ];
+const port = normalizePort(process.env.PORT || "5000");
+app.set("port", port);
 
-  res.json(customers);
-});*/
+const server = http.createServer(app);
 
-const port = 5000;
+server.listen(port);
 
-console.log(`server started on port ${port}`);
-app.listen(port, () => `Server running on port ${port}`);
+ function normalizePort(val) {
+   const port = parseInt(val, 10);
+   if (isNaN(port)) {
+     return val;
+   }
+   if (port >= 0) {
+     return port;
+   }
+   return false;
+ }
+
+ if (process.env.NODE_ENV === 'production') {
+  // Exprees will serve up production assets
+  app.use(express.static('client/build'));
+
+  // Express serve up index.html file if it doesn't recognize route
+  const path = require('path');
+  app.get('*', (req, res) => {
+    res.sendFile(path.resolve(__dirname, 'client/build/index.html'));
+  });
+}
+
+ server.on("listening", () => {
+  console.log(`server is listening for requests on port ${server.address().port}`);
+});

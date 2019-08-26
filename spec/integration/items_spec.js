@@ -139,27 +139,4 @@ describe("routes : items", () => {
         })
     });
 
-    /*describe("POST /lists/:listId/updateItem", () => {
-        it("should update the item with the given info", () => {
-            axios.post(`${ServerBase}/lists/${this.list.id}/updateItem`, {
-                itemId: this.item.id,
-                name: "NEW NAME",
-                count: "NEW COUNT"
-              })
-              .then((res) => {
-                  Item.findOne({where: {id: this.item.id}})
-                  .then((item) => {
-                      expect(item.name).toBe("NEW NAME");
-                      expect(item.count).toBe("NEW COUNT");
-                      expect(item.isAquired).toBe(false);
-                      done();
-                  })
-              })
-              .catch((err) => {
-                console.log(err);
-                done();
-            })
-        })
-              
-    })*/
 })

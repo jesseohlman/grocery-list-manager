@@ -1,12 +1,10 @@
 const Item = require("../db/models").item;
 const List = require("../db/models").list;
 
-
 const Auth = require("../policies/policy");
 
 module.exports = {
     addItem(req, res, next){
-
         List.findOne({where: {id: req.params.listId}})
         .then((list) => {
 
@@ -16,14 +14,19 @@ module.exports = {
                 Item.create({
                     name: req.body.name,
                     count: req.body.count,
-                    listId: req.params.listId
+                    listId: req.params.listId,
+                    isAquired: req.body.isAquired || false
                 })
                 .then((item) => {
-                    res.json(item);
+                    res.end();
                 })
             } else {
                 res.json({message: "You are not Authorized to do that"});
             }
+        })
+        .catch((err) => {
+            console.log(err);
+            res.end();
         })
     },
 
@@ -36,21 +39,20 @@ module.exports = {
             if(auth._isOwner()){
                 Item.destroy({where: {id: req.body.itemId, listId: req.params.listId}})
                 .then((item) => {
-                    res.json(item);
-                })
-                .catch((err) => {
-                    console.log(err);
+                    res.end();
                 })
             } else {
                 res.json({message:"You are not Authorized to do that"});
-
             }
+        })
+        .catch((err) => {
+            console.log(err);
+            res.end();
         })
     },
 
     complete(req, res, next){
-
-        List.findOne({where: {id: req.params.listId}})
+        List.findOne({where: {id: req.body.listId}})
         .then((list) => {
 
             var auth = new Auth(req.user, list);
@@ -58,50 +60,20 @@ module.exports = {
             if(auth._isOwner()){
                 Item.findOne({where: {id: req.body.itemId, listId: req.body.listId}})
                 .then((item) => {
-                    var change = false;
-                    item.isAquired === false ? change = true : change = false;
-
+                    var change = item.isAquired === false ? true : false;
+                    //change from true to false and vise versa
                     item.update({isAquired: change})
                     .then((item) => {
-                        res.json(item);
+                        res.json({isAquired: change});
                     })
-                    .catch((err) => {
-                        console.log(err);
-                    })
-                    
                 })
-            
             } else {
                 res.json({message:"You are not Authorized to do that"});
             }
         })
-    },
-
-    update(req, res, next){
-        console.log(`itemId: ${req.body.itemId} listId: ${req.params.listId} name: ${req.body.name} count: ${req.body.count}`);
-        Item.findOne({where: {id: req.body.itemId, listId: req.params.listId}})
-        .then((item) => {
-            const auth = new Auth(req.user, item);
-
-            if(auth._isOwner()){
-                Item.update({name: req.body.name, count: req.body.count},
-                    {where: {id: req.body.itemId, listId: req.params.listId}
-                })
-                .then((result) => {
-                    Item.findOne({where: {id: req.body.itemId, listId: req.params.listId}})
-                    .then((item) => {
-                        console.log(`item.name; ${item.name}`)
-                        res.json(item)
-        
-                    })
-                })
-                .catch((err) => {
-                    console.log(err);
-                })
-            } else {
-                res.json({message: "You are not authorized to do that."});
-            }
+        .catch((err) => {
+            console.log(err);
+            res.end();
         })
-       
     }
 }

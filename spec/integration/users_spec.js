@@ -31,16 +31,6 @@ describe("users: routes", () => {
         })
     })
 
-    /*describe("GET /users/signIn/", () => {
-        it("should render the sign in page", (done) => {
-            request.get(`${base}/users/signIn`, (err, res, body) => {
-                expect(body).toContain("name:");
-                done();
-            })
-            
-        })
-    })*/
-
     
 
     describe("POST /users/submit", () => {

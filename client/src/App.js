@@ -2,12 +2,11 @@ import React, { Component } from 'react';
 import { Route, Link, BrowserRouter as Router } from 'react-router-dom';
 import './css/App.css';
 
+import ListCreate from './components/lists/listCreate';
+import ListSelect from './components/lists/listSelect';
 
-import ListCreate from './components/listCreate';
-import ListSelect from './components/listSelect';
-
-import UserSignUp from './components/userSignUp';
-import UserSignIn from './components/userSignIn';
+import UserSignUp from './components/users/userSignUp';
+import UserSignIn from './components/users/userSignIn';
 
 import About from "./components/about";
 
@@ -24,7 +23,7 @@ class App extends Component {
     }
 
     this.handleSignOut = this.handleSignOut.bind(this);
-    this.handleSignIn = this.handleSignIn.bind(this);
+    this.afterSignIn = this.afterSignIn.bind(this);
 
   }
 
@@ -32,43 +31,27 @@ class App extends Component {
     fetch("/users", {credentials: "include"})
     .then(res => res.json())
     .then((user) => {
-      this.setState({user: user});
+      this.setState({user: user, message: null});
     })
   }
 
   handleSignOut(){
-    axios.get("/users/signOut")
-    .then((res) => {
-
-      fetch("/users", {credentials: "include"})
-      .then(res => res.json())
-      .then((user) => {
-        this.setState({user: user});
+    if (window.confirm('Are you sure you wish to sign out?')){
+      axios.get("/users/signOut")
+      .then((res) => {
+        this.setState({user: {id: undefined}, message: "You've been signed out.\nMost functions will be unavliable until you sign back in!"})
       })
-    })
-    .catch((err) => {
-      console.log(err);
-    })
+      .catch((err) => {
+        console.log(err);
+      })
   }
 
-  handleSignIn(input){  
-     axios.post("/users/signIn", {
-       email: input.email,
-       password: input.password,
-     })
-     .then((res) => {
-      fetch("/users", {credentials: "include"})
-      .then(res => res.json())
-      .then((user) => {
-        this.setState({user: user, message: res.data.message});
-      })
-     })
-     .catch((err) => {
-       console.log(err);
-     });
+  }
 
-   }
-
+  afterSignIn(user){
+    this.setState({user: user, message: null});
+    //set current user
+  }
 
 
   render() {
@@ -76,33 +59,36 @@ class App extends Component {
     return (
       <div className="App">
       
-        <header className="App-header">
-          <h1 className="App-title">Grocery List</h1>
-        </header>
         <Router>
           <div>
-            <nav>
+          <header>
+            <h2 className="App-title">Grocery List Manager</h2>
+
               {currentUser ? (<ul>
-                  <li><Link className="link" to="/lists/new/">New List</Link></li>
-                  <li><Link className="link" to="/lists/select/">Select List</Link></li>
-                  <li><Link className="link" to="/about/">About</Link></li>
-                  <li><a className="link" href="#" onClick={this.handleSignOut}>Sign Out</a></li>
+                  <li className="link"><Link to="/lists/new/">New List</Link></li>
+                  <li className="link"><Link to="/lists/select/">Select List</Link></li>
+                  <li className="link"><Link to="/about/">About</Link></li>
+                  <li className="link"><Link to="/" onClick={this.handleSignOut}>Sign Out</Link></li>
                 </ul>) : (<ul>
-                  <li><Link className="link" to="/users/new/">Create Account</Link></li>
-                  <li><Link className="link" to="/users/signIn/">Sign In</Link></li>
-                  <li><Link className="link" to="/about/">About</Link></li>
-
+                  <li className="link"><Link to="/users/new/">Create Account</Link></li>
+                  <li className="link"><Link to="/users/signIn/">Sign In</Link></li>
+                  <li className="link"><Link to="/about/">About</Link></li>
                 </ul>)}
-              </nav>
-    
-            <Route path="/about/" component={About} />
+            </header>
 
-            <Route path="/lists/new/" component={ListCreate} />
-            <Route path="/lists/select/" component={ListSelect} />
+            <body>
+              <div>{this.state.message}</div>
+              <Route path="/about/" component={About} />
 
-            <Route path="/users/new/" component={UserSignUp}/>
-            <Route path="/users/signIn/" render={(props) => <UserSignIn {...props} handleSignIn={this.handleSignIn} message={this.state.message}/>}/>
+              <Route path="/lists/new/" component={ListCreate} />
+              <Route path="/lists/select/" component={ListSelect} />
 
+              <Route path="/users/new/" component={UserSignUp}/>
+
+              <Route path="/users/signIn/" render={(props) => 
+                <UserSignIn {...props} afterSignIn={this.afterSignIn} />
+              }/>
+            </body>
 
           </div>
         </Router>

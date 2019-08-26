@@ -7,13 +7,19 @@ class UserSignUp extends Component{
         super(props);
 
         this.state = {
-            errors: null
+            message: null
         }
 
         this.handleSignUp = this.handleSignUp.bind(this);
+
     }
 
-      handleSignUp(e){
+    componentDidMount(){
+        document.getElementById("name").focus();
+        this.setState({message: null});
+    }
+
+    handleSignUp(e){
         e.preventDefault();
 
         axios.post("/users/submit", {
@@ -21,10 +27,13 @@ class UserSignUp extends Component{
             email: this.email.value,
             password: this.password.value
         })
-        .then((errors) => {
-            if(errors){
-                this.setState({errors: errors.data.errors[0].msg});
+        .then((res) => {
+            if(res.data.errors){
+                this.setState({message: res.data.errors[0].msg});
             }
+            if(res.data.message){
+                this.setState({message: res.data.message});
+            } 
         })
         .catch((err) => {
             console.log(err);
@@ -34,24 +43,24 @@ class UserSignUp extends Component{
 
     render(){
         return(
-            <div className="SignInForm">
+            <div className="create-form">
                 <h2>Create your account</h2>
-                <div id="err">{this.state.errors}</div>
+                <div id="err">{this.state.message}</div>
                 <form onSubmit={this.handleSignUp}>
                     <div className="form-group">
                         <label for="name">Name:</label>
-                        <input className="input-small form-control" type="text" name="name" ref={(name) => this.name = name} />
+                        <input className="input-small form-control" type="text" id="name" name="name" ref={(name) => this.name = name} placeholder="your name"/>
                     </div>
 
                     <div className="form-group">
                         <label for="email">Email:</label>
-                        <input className="input-small form-control" type="email" name="email" ref={(email) => this.email = email} />
+                        <input className="input-small form-control" type="email" name="email" ref={(email) => this.email = email} placeholder="valid email"/>
                         <small className="form-text text-muted">must be a valid email</small>
                     </div>
                     
                     <div className="form-group">
                         <label for="password">Password:</label>
-                        <input className="input-small form-control" type="password" name="password" ref={(password) => this.password = password} />
+                        <input className="input-small form-control" type="password" name="password" ref={(password) => this.password = password} placeholder="password"/>
                         <small className="form-text text-muted">must be at least 6 characters in length</small>
                     </div>
 
