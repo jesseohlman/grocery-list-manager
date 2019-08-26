@@ -1,0 +1,26 @@
+$grey-scheme: grey;
+$text-color: black;
+
+.list-select{
+    padding-left: 0;
+    list-style: none;
+
+    li:nth-child(even){
+        background: $grey-scheme * 1.9;
+    }
+    li{
+        list-style-position: inside;
+        border-bottom: 1px dashed $grey-scheme * 1.5;
+        padding: 15px;
+        list-style-type: none;
+        margin: 0px;
+    
+        .list-view{
+            text-decoration: none;
+            color: $text-color;
+        }
+        .list-view:hover{
+            color: blue;
+        }
+    }
+}

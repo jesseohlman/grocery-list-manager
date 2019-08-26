@@ -1,0 +1,16 @@
+.list-select {
+  padding-left: 0;
+  list-style: none; }
+  .list-select li:nth-child(even) {
+    background: #f3f3f3; }
+  .list-select li {
+    list-style-position: inside;
+    border-bottom: 1px dashed silver;
+    padding: 15px;
+    list-style-type: none;
+    margin: 0px; }
+    .list-select li .list-view {
+      text-decoration: none;
+      color: black; }
+    .list-select li .list-view:hover {
+      color: blue; }

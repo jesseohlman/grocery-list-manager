@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Route, Link, BrowserRouter as Router } from 'react-router-dom';
-import './App.css';
+import './css/App.css';
 
 
 import ListCreate from './components/listCreate';
@@ -81,18 +81,19 @@ class App extends Component {
         </header>
         <Router>
           <div>
-            
-            {currentUser ? (<ul className="list-inline">
-                <li className="nav-piece list-inline-item"><Link to="/lists/new/">New List</Link></li>
-                <li className="nav-piece list-inline-item"><Link to="/lists/select/">Select List</Link></li>
-                <li className="nav-piece list-inline-item"><Link to="/about/">About</Link></li>
-                <li className="nav-piece list-inline-item"><a href="#" onClick={this.handleSignOut}>Sign Out</a></li>
-              </ul>) : (<ul className="list-inline">
-                <li className="nav-piece list-inline-item"><Link to="/users/new/">Create Account</Link></li>
-                <li className="nav-piece list-inline-item"><Link to="/users/signIn/">Sign In</Link></li>
-                <li className="nav-piece list-inline-item"><Link to="/about/">About</Link></li>
+            <nav>
+              {currentUser ? (<ul>
+                  <li><Link className="link" to="/lists/new/">New List</Link></li>
+                  <li><Link className="link" to="/lists/select/">Select List</Link></li>
+                  <li><Link className="link" to="/about/">About</Link></li>
+                  <li><a className="link" href="#" onClick={this.handleSignOut}>Sign Out</a></li>
+                </ul>) : (<ul>
+                  <li><Link className="link" to="/users/new/">Create Account</Link></li>
+                  <li><Link className="link" to="/users/signIn/">Sign In</Link></li>
+                  <li><Link className="link" to="/about/">About</Link></li>
 
-              </ul>)}
+                </ul>)}
+              </nav>
     
             <Route path="/about/" component={About} />
 

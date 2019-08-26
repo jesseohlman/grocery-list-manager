@@ -1,0 +1,51 @@
+
+  
+$text-color: white;
+$title-color: orange;
+$bg-color: rgb(75, 70, 70);
+
+
+nav{
+
+     ul{
+        background-color: $bg-color;
+        padding: 0;
+        margin: 0;
+        list-style: none;
+     }
+
+     li{
+        display: inline-block;
+     }
+
+     .link{
+        color: $text-color;
+        display: inline-block;
+        padding: 10px 20px;
+        text-decoration: none;
+     }
+
+     a:hover{
+         background-color: $bg-color * 1.7;
+         color: $text-color;
+     }
+}
+
+
+
+.App{
+    width: 100%;
+  }
+  
+  .input-small{
+    width: 75%;
+  }
+  
+  .nav-piece{
+    padding: 0px 0px 0px 0px;
+    margin: 0px 10px 0px 10px
+  }
+  
+  .SignInForm{
+    margin: 0px 0px 0px 15px;
+  }

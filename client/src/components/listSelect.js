@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Route, Link, BrowserRouter as Router } from 'react-router-dom';
+import "../css/listSelect.css";
 
 import ListView from "./listView";
 
@@ -62,9 +63,9 @@ class ListSelect extends Component {
       <div>
         <div>{this.state.message}</div>
        <Router>
-            <ul>
+            <ul className="list-select">
                 {this.state.lists.map(list =>
-                    <li key={list.id}><Link to={"/lists/" + list.id + "/view"}>Title: {list.title}<br></br><small>Store: {list.store}</small></Link>
+                    <li key={list.id}><Link className="list-view" to={"/lists/" + list.id + "/view"}>Title: {list.title}<br></br><small>Store: {list.store}</small></Link>
                     <br></br>
                     {list.isCompleted && (<div><small>list completed</small></div>)}
                     <button className="btn btn-danger btn-sm" onClick={(e) => this.handleListDelete(e, list.id)}>Delete</button>
