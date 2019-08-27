@@ -31,9 +31,9 @@ class ListView extends Component {
   componentDidMount(){
     this.getItems();
     
-    
     this.timer = setInterval(()=> this.getItems(), 10000);
     //updates state every 10 seconds
+    //change to websockets eventually
   }
 
   componentWillUnmount(){
